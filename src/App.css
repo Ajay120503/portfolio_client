@@ -1,0 +1,344 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  color-scheme: light;
+  --color-base-100: #ffffff;
+  --color-base-200: #f7f8fb;
+  --color-base-300: #e4e7ee;
+  --color-base-content: #111827;
+  --color-primary: #2563eb;
+  --color-primary-content: #ffffff;
+  --color-secondary: #0f766e;
+  --color-secondary-content: #ffffff;
+  --color-accent: #c2410c;
+  --color-accent-content: #ffffff;
+  --color-neutral: #111827;
+  --color-neutral-content: #f9fafb;
+  --color-info: #0284c7;
+  --color-info-content: #ffffff;
+  --color-success: #15803d;
+  --color-success-content: #ffffff;
+  --color-warning: #b45309;
+  --color-warning-content: #ffffff;
+  --color-error: #dc2626;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.7rem;
+  --radius-field: 0.65rem;
+  --radius-box: 0.8rem;
+  --border: 1px;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: #0b1020;
+  --color-base-200: #111827;
+  --color-base-300: #243047;
+  --color-base-content: #f8fafc;
+  --color-primary: #60a5fa;
+  --color-primary-content: #08111f;
+  --color-secondary: #2dd4bf;
+  --color-secondary-content: #041916;
+  --color-accent: #fb923c;
+  --color-accent-content: #1f0c02;
+  --color-neutral: #e5e7eb;
+  --color-neutral-content: #111827;
+  --color-info: #38bdf8;
+  --color-info-content: #07131b;
+  --color-success: #4ade80;
+  --color-success-content: #06150b;
+  --color-warning: #facc15;
+  --color-warning-content: #171301;
+  --color-error: #f87171;
+  --color-error-content: #1f0808;
+  --radius-selector: 0.7rem;
+  --radius-field: 0.65rem;
+  --radius-box: 0.8rem;
+  --border: 1px;
+}
+
+:root {
+  --portfolio-font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-base-100);
+  color: var(--color-base-content);
+  font-family: var(--portfolio-font-family);
+}
+
+.font-sans {
+  font-family: var(--portfolio-font-family);
+}
+
+.public-page {
+  position: relative;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 4%, transparent), transparent 330px),
+    radial-gradient(circle at top left, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 340px),
+    radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--color-secondary) 8%, transparent), transparent 300px),
+    var(--color-base-100);
+  color: var(--color-base-content);
+}
+
+.public-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.055;
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image:
+    radial-gradient(circle at 50% 18%, black, transparent 55%),
+    linear-gradient(to bottom, black, transparent 88%);
+}
+
+.public-page::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.62;
+  background:
+    radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 28rem),
+    radial-gradient(circle at 88% 24%, color-mix(in srgb, var(--color-secondary) 10%, transparent), transparent 30rem),
+    radial-gradient(circle at 52% 86%, color-mix(in srgb, var(--color-accent) 7%, transparent), transparent 34rem);
+}
+
+.public-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.public-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.public-section {
+  position: relative;
+  padding: 5rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .public-section {
+    padding-block: 6rem;
+  }
+}
+
+.public-container {
+  width: min(100%, 72rem);
+  margin-inline: auto;
+}
+
+.public-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-base-100) 24%, transparent), transparent 70%);
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+
+.public-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-primary) 24%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  color: var(--color-primary);
+  padding: 0.45rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.public-title {
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1;
+  font-size: 3rem;
+}
+
+@media (min-width: 768px) {
+  .public-title {
+    font-size: 3.75rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .public-title {
+    font-size: 4.35rem;
+  }
+}
+
+.public-gradient-text {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-primary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.public-card {
+  border: 1px solid color-mix(in srgb, var(--color-base-content) 10%, transparent);
+  background: color-mix(in srgb, var(--color-base-100) 86%, transparent);
+  box-shadow: 0 14px 40px color-mix(in srgb, black 7%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.public-card-hover {
+  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.public-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--color-primary) 14%, transparent);
+}
+
+.public-image-frame {
+  border: 1px solid color-mix(in srgb, var(--color-base-content) 10%, transparent);
+  background: color-mix(in srgb, var(--color-base-200) 82%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 16%, transparent), 0 24px 80px color-mix(in srgb, black 12%, transparent);
+}
+
+.public-input {
+  border-radius: 0.85rem;
+  border-color: color-mix(in srgb, var(--color-base-content) 12%, transparent);
+  background: color-mix(in srgb, var(--color-base-100) 82%, transparent);
+}
+
+.admin-surface {
+  border: 1px solid var(--color-base-300);
+  background: color-mix(in srgb, var(--color-base-100) 92%, transparent);
+  box-shadow: 0 10px 26px color-mix(in srgb, black 6%, transparent);
+}
+
+.admin-shell .public-card,
+.admin-main .card {
+  border-color: var(--color-base-300);
+  background: color-mix(in srgb, var(--color-base-100) 94%, transparent);
+  box-shadow: 0 10px 26px color-mix(in srgb, black 6%, transparent);
+  backdrop-filter: none;
+}
+
+.admin-main .public-card-hover:hover {
+  transform: none;
+}
+
+.admin-main h2 {
+  font-size: 1.55rem;
+  line-height: 1.25;
+}
+
+.admin-main h3 {
+  line-height: 1.3;
+}
+
+.admin-main .rounded-3xl {
+  border-radius: 1rem;
+}
+
+.admin-main .p-16 {
+  padding: 2rem;
+}
+
+.admin-main .p-6 {
+  padding: 1.25rem;
+}
+
+.admin-main .md\:p-8 {
+  padding: 1.5rem;
+}
+
+.admin-main .shadow-xl {
+  box-shadow: 0 10px 26px color-mix(in srgb, black 6%, transparent);
+}
+
+.admin-main .backdrop-blur,
+.admin-main .backdrop-blur-sm,
+.admin-main .backdrop-blur-md,
+.admin-main .backdrop-blur-xl {
+  backdrop-filter: none;
+}
+
+.admin-main .text-3xl {
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.admin-main .text-4xl {
+  font-size: 1.875rem;
+  line-height: 1.15;
+}
+
+.admin-main .input,
+.admin-main .select,
+.admin-main .textarea {
+  background-color: var(--color-base-100);
+}
+
+.card,
+.btn,
+.input,
+.select,
+.textarea {
+  font-family: var(--portfolio-font-family);
+}
+
+.rotating-name {
+  grid-template-areas: "stack";
+  /* min-width: 12ch; */
+}
+
+.rotating-name > span {
+  grid-area: stack;
+  animation: rotate-name 6s ease-in-out infinite;
+}
+
+.rotating-name > span:nth-child(2) {
+  animation-delay: 3s;
+  opacity: 0;
+}
+
+@keyframes rotate-name {
+  0%,
+  42% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  50%,
+  92% {
+    opacity: 0;
+    transform: translateY(-0.35em);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
