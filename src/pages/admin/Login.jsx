@@ -41,13 +41,13 @@ const Login = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-base-100 px-4 py-10">
+    <div className="public-page relative flex min-h-screen items-center justify-center overflow-hidden bg-base-100 px-4 py-10">
       {/* Animated background orbs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-40 -left-40 h-125 w-125 rounded-full bg-primary/20 blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -right-40 h-125 w-125 rounded-full bg-secondary/20 blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-150 w-150 rounded-full bg-accent/5 blur-3xl" />
-      </div>
+      </div> */}
 
       {/* Decorative rings */}
       <div className="absolute inset-8 rounded-[3rem] border border-primary/10 pointer-events-none" />
@@ -166,9 +166,9 @@ const Login = () => {
             </form>
 
             {/* Demo hint */}
-            <p className="mt-6 text-center text-xs text-base-content/40">
+            {/* <p className="mt-6 text-center text-xs text-base-content/40">
               Demo credentials pre-filled
-            </p>
+            </p> */}
           </div>
         </div>
       </div>
