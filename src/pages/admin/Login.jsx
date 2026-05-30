@@ -44,9 +44,9 @@ const Login = () => {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-base-100 px-4 py-10">
       {/* Animated background orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-40 -left-40 h-[500px] w-[500px] rounded-full bg-primary/20 blur-3xl animate-pulse" />
-        <div className="absolute -bottom-40 -right-40 h-[500px] w-[500px] rounded-full bg-secondary/20 blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[600px] w-[600px] rounded-full bg-accent/5 blur-3xl" />
+        <div className="absolute -top-40 -left-40 h-125 w-125 rounded-full bg-primary/20 blur-3xl animate-pulse" />
+        <div className="absolute -bottom-40 -right-40 h-125 w-125 rounded-full bg-secondary/20 blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-150 w-150 rounded-full bg-accent/5 blur-3xl" />
       </div>
 
       {/* Decorative rings */}
@@ -55,15 +55,15 @@ const Login = () => {
 
       {/* Main card */}
       <div className="relative z-10 w-full max-w-md">
-        <div className="relative overflow-hidden rounded-[2rem] border border-base-200 bg-base-100/80 backdrop-blur-xl shadow-2xl transition-all duration-300 hover:shadow-primary/10">
+        <div className="relative overflow-hidden rounded-4xl border border-base-200 bg-base-100/80 backdrop-blur-xl shadow-2xl transition-all duration-300 hover:shadow-primary/10">
           {/* Top accent gradient */}
-          <div className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-primary via-secondary to-primary" />
+          <div className="absolute inset-x-0 top-0 h-1.5 bg-linear-to-r from-primary via-secondary to-primary" />
 
           <div className="px-8 pt-10 text-center">
             {/* Logo / Icon */}
             <div className="relative mx-auto mb-6 w-fit">
               <div className="absolute inset-0 rounded-3xl bg-primary/40 blur-2xl animate-pulse" />
-              <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-primary to-secondary shadow-xl transition-transform hover:scale-105 duration-300">
+              <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl bg-linear-to-br from-primary to-secondary shadow-xl transition-transform hover:scale-105 duration-300">
                 <Code2 size={40} className="text-white" />
               </div>
             </div>
@@ -76,7 +76,7 @@ const Login = () => {
               </span>
             </div>
 
-            <h1 className="mb-3 text-4xl font-black leading-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="mb-3 text-4xl font-black leading-tight bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
               Welcome Back
             </h1>
             <p className="mx-auto max-w-sm leading-relaxed text-base-content/60">
@@ -101,7 +101,7 @@ const Login = () => {
                   />
                   <input
                     type="email"
-                    value={email}
+                    // value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     placeholder="admin@portfolio.com"
                     className="input input-bordered h-14 w-full rounded-xl border-base-200 bg-base-200/50 pl-12 text-sm transition-all focus:border-primary focus:bg-base-100 focus:shadow-md"
@@ -124,7 +124,7 @@ const Login = () => {
                   />
                   <input
                     type={showPassword ? "text" : "password"}
-                    value={password}
+                    // value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     placeholder="••••••••"
                     className="input input-bordered h-14 w-full rounded-xl border-base-200 bg-base-200/50 pl-12 pr-14 text-sm transition-all focus:border-primary focus:bg-base-100 focus:shadow-md"
