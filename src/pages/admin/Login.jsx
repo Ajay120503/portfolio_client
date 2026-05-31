@@ -11,6 +11,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { useSettings } from "../../hooks/usePortfolioData";
+import { useTheme } from "../../hooks/useTheme";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -20,6 +22,8 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { login, isAuthenticated } = useAuth();
+  const { data: settings } = useSettings();
+  const { theme } = useTheme(settings?.defaultTheme);
   const navigate = useNavigate();
 
   if (isAuthenticated) {
@@ -64,7 +68,10 @@ const Login = () => {
             <div className="relative mx-auto mb-6 w-fit">
               <div className="absolute inset-0 rounded-3xl bg-primary/40 blur-2xl animate-pulse" />
               <div className="relative flex h-20 w-20 items-center justify-center rounded-3xl bg-linear-to-br from-primary to-secondary shadow-xl transition-transform hover:scale-105 duration-300">
-                <Code2 size={40} className="text-white" />
+                <Code2
+                  size={40}
+                  className={theme === "black" ? "text-black" : "text-white"}
+                />
               </div>
             </div>
 
@@ -152,14 +159,30 @@ const Login = () => {
               >
                 {loading ? (
                   <>
-                    <span className="loading loading-spinner loading-sm" />
-                    Signing In...
+                    <span
+                      className={`loading loading-spinner loading-sm ${
+                        theme === "black" ? "text-black" : "text-white"
+                      }`}
+                    />
+                    <span
+                      className={`${
+                        theme === "black" ? "text-black" : "text-white"
+                      }`}
+                    >
+                      Signing In...
+                    </span>
                   </>
                 ) : (
                   <>
-                    <Sparkles size={18} />
-                    Access Dashboard
-                    <ArrowRight size={18} />
+                    <div
+                      className={`flex justify-center items-center space-x-1
+                        ${theme === "black" ? "text-black" : "text-white"}
+                      `}
+                    >
+                      <Sparkles size={18} />
+                      Access Dashboard
+                      <ArrowRight size={18} />
+                    </div>
                   </>
                 )}
               </button>

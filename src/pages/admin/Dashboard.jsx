@@ -87,200 +87,200 @@ const Dashboard = () => {
     },
   ];
 
-  const quickActions = [
-    {
-      label: "Profile",
-      path: "/admin/profile",
-      icon: "👤",
-      desc: "Edit your info",
-    },
-    {
-      label: "Projects",
-      path: "/admin/projects",
-      icon: "🚀",
-      desc: "Add or edit projects",
-    },
-    {
-      label: "Blog",
-      path: "/admin/blog",
-      icon: "📝",
-      desc: "Write new article",
-    },
-    {
-      label: "Settings",
-      path: "/admin/settings",
-      icon: "⚙️",
-      desc: "Site configuration",
-    },
-  ];
+ const quickActions = [
+   {
+     label: "Profile",
+     path: "/admin/profile",
+     icon: Users,
+     desc: "Edit your info",
+   },
+   {
+     label: "Projects",
+     path: "/admin/projects",
+     icon: FolderOpen,
+     desc: "Add or edit projects",
+   },
+   {
+     label: "Blog",
+     path: "/admin/blog",
+     icon: BookOpen,
+     desc: "Write new article",
+   },
+   {
+     label: "Settings",
+     path: "/admin/settings",
+     icon: Star,
+     desc: "Site configuration",
+   },
+ ];
 
-  return (
-    <div className="space-y-8">
-      {/* Header Card */}
-      <div className="card bg-base-100/80 backdrop-blur-sm public-card rounded-3xl p-6 md:p-8 shadow-md">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Sparkles size={18} className="text-primary" />
-              <span className="text-sm font-semibold uppercase tracking-wider text-primary">
-                Portfolio Overview
-              </span>
-            </div>
-            <h1 className="text-3xl md:text-4xl font-black bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Dashboard
-            </h1>
-            <p className="mt-2 text-base-content/60">
-              Welcome back. Here's the latest activity from your portfolio.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 rounded-2xl bg-primary/10 px-5 py-3 border border-primary/20">
-            <TrendingUp size={18} className="text-primary" />
-            <span className="text-sm font-semibold text-primary">
-              Portfolio active
-            </span>
-          </div>
-        </div>
-      </div>
+ return (
+   <div className="space-y-8">
+     {/* Header Card */}
+     <div className="card bg-base-100/80 backdrop-blur-sm public-card rounded-3xl p-6 md:p-8 shadow-md">
+       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+         <div>
+           <div className="flex items-center gap-2 mb-2">
+             <Sparkles size={18} className="text-primary" />
+             <span className="text-sm font-semibold uppercase tracking-wider text-primary">
+               Portfolio Overview
+             </span>
+           </div>
+           <h1 className="text-3xl md:text-4xl font-black bg-linear-to-r from-primary to-secondary bg-clip-text text-transparent">
+             Dashboard
+           </h1>
+           <p className="mt-2 text-base-content/60">
+             Welcome back. Here's the latest activity from your portfolio.
+           </p>
+         </div>
+         <div className="flex items-center gap-2 rounded-2xl bg-primary/10 px-5 py-3 border border-primary/20">
+           <TrendingUp size={18} className="text-primary" />
+           <span className="text-sm font-semibold text-primary">
+             Portfolio active
+           </span>
+         </div>
+       </div>
+     </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {statCards.map((card) => (
-          <StatCard key={card.label} {...card} />
-        ))}
-      </div>
+     {/* Stats Grid */}
+     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+       {statCards.map((card) => (
+         <StatCard key={card.label} {...card} />
+       ))}
+     </div>
 
-      {/* Recent Messages + Quick Actions */}
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        {/* Recent Messages */}
-        <div className="xl:col-span-2">
-          <div className="card bg-base-100/80 backdrop-blur-sm public-card rounded-3xl p-6 shadow-md h-full">
-            <div className="mb-6 flex items-center justify-between gap-4">
-              <div>
-                <h3 className="flex items-center gap-2 text-xl font-bold">
-                  <MessageSquare size={20} className="text-primary" />
-                  Recent Messages
-                </h3>
-                <p className="mt-1 text-sm text-base-content/50">
-                  Latest messages from your contact form
-                </p>
-              </div>
-              <Link
-                to="/admin/messages"
-                className="btn btn-primary btn-sm rounded-xl gap-1"
-              >
-                View All
-                <ArrowUpRight size={14} />
-              </Link>
-            </div>
+     {/* Recent Messages + Quick Actions */}
+     <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+       {/* Recent Messages */}
+       <div className="xl:col-span-2">
+         <div className="card bg-base-100/80 backdrop-blur-sm public-card rounded-3xl p-6 shadow-md h-full">
+           <div className="mb-6 flex items-center justify-between gap-4">
+             <div>
+               <h3 className="flex items-center gap-2 text-xl font-bold">
+                 <MessageSquare size={20} className="text-primary" />
+                 Recent Messages
+               </h3>
+               <p className="mt-1 text-sm text-base-content/50">
+                 Latest messages from your contact form
+               </p>
+             </div>
+             <Link
+               to="/admin/messages"
+               className="btn btn-primary btn-sm rounded-xl gap-1"
+             >
+               View All
+               <ArrowUpRight size={14} />
+             </Link>
+           </div>
 
-            {stats?.recentMessages?.length > 0 ? (
-              <div className="space-y-4">
-                {stats.recentMessages.map((msg) => (
-                  <div
-                    key={msg._id}
-                    className="group rounded-2xl public-card bg-base-100/50 p-4 transition-all hover:border-primary/30 hover:bg-base-100/80"
-                  >
-                    <div className="flex gap-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/15 font-bold text-primary shadow-sm">
-                        {msg.name?.[0]?.toUpperCase() || "?"}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <div className="mb-1 flex flex-wrap items-center gap-2">
-                          <h4 className="truncate font-semibold">{msg.name}</h4>
-                          {!msg.isRead && (
-                            <span className="badge badge-error badge-sm gap-1">
-                              <Sparkles size={10} />
-                              New
-                            </span>
-                          )}
-                        </div>
-                        <p className="truncate text-sm text-base-content/70">
-                          {msg.subject}
-                        </p>
-                        <div className="mt-2 flex items-center gap-2 text-xs text-base-content/40">
-                          <Clock size={12} />
-                          {new Date(msg.createdAt).toLocaleDateString()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="py-16 text-center">
-                <div className="mx-auto w-20 h-20 rounded-full bg-base-200 flex items-center justify-center text-4xl mb-4">
-                  📭
-                </div>
-                <h4 className="text-lg font-semibold mb-1">No messages yet</h4>
-                <p className="text-sm text-base-content/50">
-                  New contact messages will appear here.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
+           {stats?.recentMessages?.length > 0 ? (
+             <div className="space-y-4">
+               {stats.recentMessages.map((msg) => (
+                 <div
+                   key={msg._id}
+                   className="group rounded-2xl public-card bg-base-100/50 p-4 transition-all hover:border-primary/30 hover:bg-base-100/80"
+                 >
+                   <div className="flex gap-4">
+                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/15 font-bold text-primary shadow-sm">
+                       {msg.name?.[0]?.toUpperCase() || "?"}
+                     </div>
+                     <div className="min-w-0 flex-1">
+                       <div className="mb-1 flex flex-wrap items-center gap-2">
+                         <h4 className="truncate font-semibold">{msg.name}</h4>
+                         {!msg.isRead && (
+                           <span className="badge badge-error badge-sm gap-1">
+                             <Sparkles size={10} />
+                             New
+                           </span>
+                         )}
+                       </div>
+                       <p className="truncate text-sm text-base-content/70">
+                         {msg.subject}
+                       </p>
+                       <div className="mt-2 flex items-center gap-2 text-xs text-base-content/40">
+                         <Clock size={12} />
+                         {new Date(msg.createdAt).toLocaleDateString()}
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               ))}
+             </div>
+           ) : (
+             <div className="py-16 text-center">
+               <div className="mx-auto w-20 h-20 rounded-full bg-base-200 flex items-center justify-center text-4xl mb-4">
+                 📭
+               </div>
+               <h4 className="text-lg font-semibold mb-1">No messages yet</h4>
+               <p className="text-sm text-base-content/50">
+                 New contact messages will appear here.
+               </p>
+             </div>
+           )}
+         </div>
+       </div>
 
-        {/* Quick Actions */}
-        <div>
-          <div className="card bg-base-100/80 backdrop-blur-sm public-card rounded-3xl p-6 shadow-md h-full">
-            <div className="mb-6">
-              <h3 className="flex items-center gap-2 text-xl font-bold">
-                <Eye size={20} className="text-primary" />
-                Quick Actions
-              </h3>
-              <p className="mt-1 text-sm text-base-content/50">
-                Manage your portfolio faster
-              </p>
-            </div>
+       {/* Quick Actions */}
+       <div>
+         <div className="card bg-base-100/80 backdrop-blur-sm public-card rounded-3xl p-6 shadow-md h-full">
+           <div className="mb-6">
+             <h3 className="flex items-center gap-2 text-xl font-bold">
+               <Eye size={20} className="text-primary" />
+               Quick Actions
+             </h3>
+             <p className="mt-1 text-sm text-base-content/50">
+               Manage your portfolio faster
+             </p>
+           </div>
 
-            <div className="space-y-3">
-              {quickActions.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className="group flex items-center justify-between rounded-2xl public-card bg-base-100/50 p-4 transition-all hover:border-primary/40 hover:bg-primary/5"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-2xl shadow-sm">
-                      {item.icon}
-                    </div>
-                    <div>
-                      <p className="font-semibold transition-colors group-hover:text-primary">
-                        {item.label}
-                      </p>
-                      <p className="text-xs text-base-content/50">
-                        {item.desc}
-                      </p>
-                    </div>
-                  </div>
-                  <ArrowUpRight
-                    size={18}
-                    className="text-base-content/30 transition-colors group-hover:text-primary"
-                  />
-                </Link>
-              ))}
-            </div>
+           <div className="space-y-3">
+             {quickActions.map((item) => (
+               <Link
+                 key={item.path}
+                 to={item.path}
+                 className="group flex items-center justify-between rounded-2xl public-card bg-base-100/50 p-4 transition-all hover:border-primary/40 hover:bg-primary/5"
+               >
+                 <div className="flex items-center gap-4">
+                   <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-2xl shadow-sm">
+                     <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 shadow-sm">
+                       <item.icon size={22} className="text-primary" />
+                     </div>
+                   </div>
+                   <div>
+                     <p className="font-semibold transition-colors group-hover:text-primary">
+                       {item.label}
+                     </p>
+                     <p className="text-xs text-base-content/50">{item.desc}</p>
+                   </div>
+                 </div>
+                 <ArrowUpRight
+                   size={18}
+                   className="text-base-content/30 transition-colors group-hover:text-primary"
+                 />
+               </Link>
+             ))}
+           </div>
 
-            {/* Extra Stats */}
-            <div className="mt-6 pt-4 border-t border-base-200">
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-base-content/50">Total page views</span>
-                <span className="font-bold text-primary">
-                  {stats?.totalViews?.toLocaleString() || 0}
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-sm mt-2">
-                <span className="text-base-content/50">Active projects</span>
-                <span className="font-bold text-secondary">
-                  {stats?.totalProjects || 0}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+           {/* Extra Stats */}
+           <div className="mt-6 pt-4 border-t border-base-200">
+             <div className="flex items-center justify-between text-sm">
+               <span className="text-base-content/50">Total page views</span>
+               <span className="font-bold text-primary">
+                 {stats?.totalViews?.toLocaleString() || 0}
+               </span>
+             </div>
+             <div className="flex items-center justify-between text-sm mt-2">
+               <span className="text-base-content/50">Active projects</span>
+               <span className="font-bold text-secondary">
+                 {stats?.totalProjects || 0}
+               </span>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ );
 };
 
 export default Dashboard;
