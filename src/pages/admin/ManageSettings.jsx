@@ -24,13 +24,9 @@ import { useSettings } from "../../hooks/usePortfolioData";
 
 const blackThemeColors = [
   "#C6FF34", // Lime
+  "#73FF00",
   "#84CC16",
   "#22C55E",
-  "#06B6D4",
-  "#3B82F6",
-  "#8B5CF6",
-  "#F59E0B",
-  "#EF4444",
   "#FFFFFF",
 ];
 
