@@ -77,11 +77,11 @@ const HeroSection = ({ profile }) => {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
         <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(circle_at_center,currentColor_1px,transparent_1px)] bg-size-[32px_32px]" />
-        <div className="absolute inset-0 mask-[radial-gradient(ellipse_at_center,black_0%,transparent_70%)]">
+        {/* <div className="absolute inset-0 mask-[radial-gradient(ellipse_at_center,black_0%,transparent_70%)]">
           <div className="absolute left-[12%] top-[22%] h-20 w-20 rotate-12 rounded-4xl border border-primary/20 backdrop-blur-sm" />
           <div className="absolute right-[16%] top-[18%] h-28 w-28 rounded-full border border-secondary/20 backdrop-blur-sm" />
           <div className="absolute bottom-[18%] left-[44%] h-16 w-16 -rotate-12 rounded-2xl border border-accent/20 backdrop-blur-sm" />
-        </div>
+        </div> */}
         {/* <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-base-100 to-transparent" /> */}
       </div>
 
