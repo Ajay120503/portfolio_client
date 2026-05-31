@@ -1,5 +1,3 @@
-// src/pages/public/Experience.jsx
-
 import { motion } from "framer-motion";
 import { Briefcase, MapPin, CalendarDays, Building2 } from "lucide-react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
@@ -42,7 +40,7 @@ export const ExperienceSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12 sm:mb-16 md:mb-20"
         >
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 text-primary mb-6">
+          <div className="relative z-10 inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 text-primary mb-6">
             <Briefcase size={40} />
           </div>
 
@@ -86,7 +84,7 @@ export const ExperienceSection = () => {
                 }`}
               >
                 {/* DOT */}
-                <div className="absolute left-5 md:left-1/2 top-6 -translate-x-1/2 z-10">
+                <div className="absolute left-5 md:left-1/2 top-6 -translate-x-1/2 z-20">
                   <div className="w-5 h-5 rounded-full bg-primary border-4 border-base-100 shadow-lg"></div>
                 </div>
 
