@@ -51,10 +51,10 @@ const Footer = () => {
                 className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-xl"
                 style={{
                   background:
-                    "linear-gradient(135deg,var(--color-primary),#7c3aed)",
+                    "linear-gradient(135deg, var(--color-primary), var(--color-secondary))",
                 }}
               >
-                <Code2 size={24} className="text-white" />
+                <Code2 size={24} />
               </motion.div>
 
               <div>
