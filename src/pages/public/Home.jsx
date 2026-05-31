@@ -20,6 +20,7 @@ import { useProfile, useSettings } from "../../hooks/usePortfolioData";
 import { ExperienceSection } from "./Experience";
 import { ServicesSection } from "./Services";
 import { SkillsSection } from "./Skills";
+import { TestimonialsSection } from "./TestimonialsSection";
 
 const socialIcons = {
   github: Github,
@@ -71,7 +72,7 @@ const HeroSection = ({ profile }) => {
   //     : profile.ctaButtonLink;
 
   return (
-    <section className="public-hero relative flex min-h-screen items-start justify-center overflow-hidden px-4 pt-10 pb-10 sm:px-6 lg:px-8">
+    <section className="public-hero relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-10 pb-10 sm:px-6 lg:px-8">
       {/* Enhanced background with animated particles */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
@@ -283,9 +284,10 @@ const Home = () => {
         ) : (
           <>
             <HeroSection profile={profile} />
-            {/* <SkillsSection showHero={false} />
             <ExperienceSection />
-            <ServicesSection showHero={false} showCta={false} /> */}
+            <SkillsSection showHero={true} />
+            {/* <ServicesSection showHero={false} showCta={false} /> */}
+            <TestimonialsSection />
           </>
         )}
         <Footer />
