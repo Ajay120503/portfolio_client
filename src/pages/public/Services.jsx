@@ -21,6 +21,7 @@ import {
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import { useServices, useSettings } from "../../hooks/usePortfolioData";
+import { useTheme } from "../../hooks/useTheme";
 
 const serviceIcons = {
   web: Globe,
@@ -105,6 +106,8 @@ const ServiceCard = ({ service, index }) => {
   const Icon = serviceIcons[service.category] || Code2;
   const features = service.features ?? [];
   const visibleFeatures = expanded ? features : features.slice(0, 4);
+  const { data: settings } = useSettings();
+  const { theme } = useTheme(settings?.defaultTheme);
 
   return (
     <motion.div
@@ -232,11 +235,17 @@ const ServiceCard = ({ service, index }) => {
               "0 6px 20px color-mix(in srgb, var(--color-primary) 28%, transparent)",
           }}
         >
-          Get Started
-          <ArrowRight
-            size={16}
-            className="group-hover:translate-x-1 transition-transform"
-          />
+          <span
+            className={`flex space-x-1 justify-center items-center ${
+              theme === "black" ? "text-black" : "text-white"
+            }`}
+          >
+            Get Started
+            <ArrowRight
+              size={16}
+              className="group-hover:translate-x-1 transition-transform"
+            />
+          </span>
         </motion.button>
       </div>
     </motion.div>
