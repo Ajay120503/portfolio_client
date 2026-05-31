@@ -21,92 +21,89 @@ const GeometricDragon = () => {
 
     const C1 = theme === "black" ? "#C6FF34" : "#2563eb";
     const C2 = theme === "black" ? "#9FE870" : "#0ea5e9";
-    const C3 = theme === "black" ? "#ffffff" : "#000000";
+    const C3 = theme === "black" ? "#ffffff" : "#6366f1";
+
+    // Mouse position
+    const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const onMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+    window.addEventListener("mousemove", onMouseMove);
 
     const makeDragon = ({
       segments,
       segLen,
-      speed,
       color,
       headScale,
       variant,
-      startX,
-      startY,
+      followSpeed,
+      offset,
     }) => {
-      const spine = Array.from({ length: segments }, (_, i) => ({
-        x: startX - i * segLen * 0.3,
-        y: startY,
+      const spine = Array.from({ length: segments }, () => ({
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
       }));
       return {
         spine,
         segments,
         segLen,
-        speed,
         color,
         headScale,
         variant,
-        headX: startX,
-        headY: startY,
-        angle: Math.random() * Math.PI * 2,
-        wander: 0,
+        followSpeed,
+        offset,
+        headX: window.innerWidth / 2,
+        headY: window.innerHeight / 2,
         time: Math.random() * 100,
       };
     };
 
-    const W = () => canvas.width;
-    const H = () => canvas.height;
-
     const dragons = [
+      // Fastest — sticks close to cursor
       makeDragon({
         segments: 80,
         segLen: 18,
-        speed: 1.2,
         color: C1,
         headScale: 1,
         variant: "diamond",
-        startX: W() * 0.3,
-        startY: H() * 0.4,
+        followSpeed: 0.12,
+        offset: { x: 0, y: 0 },
       }),
+      // Medium — lags behind
       makeDragon({
         segments: 50,
         segLen: 14,
-        speed: 1.8,
         color: C2,
         headScale: 0.7,
         variant: "spine",
-        startX: W() * 0.7,
-        startY: H() * 0.6,
+        followSpeed: 0.06,
+        offset: { x: 40, y: -30 },
       }),
+      // Slowest — trails far behind
       makeDragon({
         segments: 35,
         segLen: 22,
-        speed: 0.8,
         color: C3,
         headScale: 1.3,
         variant: "orb",
-        startX: W() * 0.5,
-        startY: H() * 0.2,
+        followSpeed: 0.03,
+        offset: { x: -50, y: 40 },
       }),
     ];
 
     const updateDragon = (d) => {
       d.time += 0.008;
-      d.wander += (Math.random() - 0.5) * 0.055;
-      d.wander *= 0.96;
 
-      d.headX += Math.cos(d.angle) * d.speed;
-      d.headY += Math.sin(d.angle) * d.speed;
-      d.angle += d.wander;
+      // Each dragon follows mouse at its own speed with a unique offset
+      const targetX = mouse.x + d.offset.x;
+      const targetY = mouse.y + d.offset.y;
 
-      const margin = 120;
-      if (d.headX < margin) d.angle += 0.035;
-      if (d.headX > W() - margin) d.angle -= 0.035;
-      if (d.headY < margin) d.angle += 0.035;
-      if (d.headY > H() - margin) d.angle -= 0.035;
+      d.headX += (targetX - d.headX) * d.followSpeed;
+      d.headY += (targetY - d.headY) * d.followSpeed;
 
-      // Smooth head follow
-      d.spine[0].x += (d.headX - d.spine[0].x) * 0.18;
-      d.spine[0].y += (d.headY - d.spine[0].y) * 0.18;
+      d.spine[0].x += (d.headX - d.spine[0].x) * 0.2;
+      d.spine[0].y += (d.headY - d.spine[0].y) * 0.2;
 
       for (let i = 1; i < d.segments; i++) {
         const dx = d.spine[i - 1].x - d.spine[i].x;
@@ -289,6 +286,7 @@ const GeometricDragon = () => {
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("mousemove", onMouseMove);
     };
   }, [theme]);
 
