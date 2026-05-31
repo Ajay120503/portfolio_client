@@ -31,6 +31,7 @@ const blackThemeColors = [
 ];
 
 const lightThemeColors = [
+  "#21AEC0",
   "#21AECC",
   "#3B82F6",
   "#0EA5E9",
