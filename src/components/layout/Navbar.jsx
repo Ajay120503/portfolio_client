@@ -188,7 +188,7 @@ const Navbar = () => {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                    {theme === "black" ? <Sun size={16} /> : <Moon size={16} />}
                   </motion.div>
                 </AnimatePresence>
               </motion.button>

@@ -13,7 +13,7 @@ const fontStacks = {
 
 const ThemeController = () => {
   const { data: settings } = useSettings();
-  useTheme(settings?.defaultTheme || "dark");
+  useTheme(settings?.defaultTheme || "black");
 
   useEffect(() => {
     const root = document.documentElement;

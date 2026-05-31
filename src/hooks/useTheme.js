@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const THEME_EVENT = 'portfolio-theme-change';
 
-export const useTheme = (defaultTheme = 'dark') => {
+export const useTheme = (defaultTheme = 'black') => {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('portfolio_theme') || defaultTheme;
   });
@@ -23,22 +23,22 @@ export const useTheme = (defaultTheme = 'dark') => {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+    if (theme === 'black') {
+      document.documentElement.classList.add('black');
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove('black');
     }
     localStorage.setItem('portfolio_theme', theme);
   }, [theme]);
 
   const toggleTheme = () => {
     setTheme(prev => {
-      const next = prev === 'dark' ? 'light' : 'dark';
+      const next = prev === 'black' ? 'light' : 'black';
       localStorage.setItem('portfolio_theme', next);
       window.dispatchEvent(new Event(THEME_EVENT));
       return next;
     });
   };
 
-  return { theme, toggleTheme, isDark: theme === 'dark' };
+  return { theme, toggleTheme, isDark: theme === 'black' };
 };

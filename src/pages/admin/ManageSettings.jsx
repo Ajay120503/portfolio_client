@@ -61,7 +61,7 @@ const ManageSettings = () => {
         googleAnalyticsId: settings.googleAnalyticsId || "",
         maintenanceMode: settings.maintenanceMode || false,
         fontFamily: settings.fontFamily || "inter",
-        defaultTheme: settings.defaultTheme || "dark",
+        defaultTheme: settings.defaultTheme || "black",
         seoMeta: {
           title: settings.seoMeta?.title || "",
           description: settings.seoMeta?.description || "",
@@ -177,7 +177,7 @@ const ManageSettings = () => {
                   {...register("defaultTheme")}
                   className="select select-bordered rounded-xl"
                 >
-                  <option value="dark">Dark</option>
+                  <option value="black">black</option>
                   <option value="light">Light</option>
                 </select>
               </div>
