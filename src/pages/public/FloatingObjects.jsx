@@ -76,7 +76,7 @@ const FloatingDesignObjects = () => {
       };
     };
 
-    const particles = Array.from({ length: 35 }, () => makeParticle());
+    const particles = Array.from({ length: 15 }, () => makeParticle());
 
     const onClick = (e) => {
       const rect = canvas.getBoundingClientRect();
