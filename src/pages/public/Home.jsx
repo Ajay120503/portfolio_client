@@ -71,7 +71,7 @@ const HeroSection = ({ profile }) => {
   //     : profile.ctaButtonLink;
 
   return (
-    <section className="public-hero relative flex min-h-screen items-start justify-center overflow-hidden px-4 pt-16 sm:px-6 sm:pt-20 lg:px-8">
+    <section className="public-hero relative flex min-h-screen items-start justify-center overflow-hidden px-4 pt-16 pb-10 sm:px-6 sm:pt-20 lg:px-8">
       {/* Enhanced background with animated particles */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />

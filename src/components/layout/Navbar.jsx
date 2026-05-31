@@ -245,13 +245,13 @@ const Navbar = () => {
               onClick={() => setMobileOpen(false)}
               className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden"
             />
-            <div className="fixed inset-x-0 top-20 z-50 flex justify-center px-4 lg:hidden">
+            <div className="fixed inset-x-0 z-50 flex justify-center px-4 lg:hidden">
               <motion.div
                 initial={{ opacity: 0, y: -20, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -15, scale: 0.96 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
-                className="w-full max-w-sm"
+                className="w-full max-w-7xl mx-auto"
               >
                 <div className="bg-base-100/95 backdrop-blur-2xl public-card rounded-2xl shadow-2xl overflow-hidden">
                   <div className="p-5 flex items-center gap-3">
