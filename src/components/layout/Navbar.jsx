@@ -147,7 +147,7 @@ const Navbar = () => {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="relative"
               >
-                <div className="absolute inset-0 bg-primary blur-md rounded-xl opacity-40 group-hover:opacity-60 transition-opacity" />
+                <div className="absolute inset-0 bg-primary blur-md rounded-xl opacity-0 group-hover:opacity-60 transition-opacity" />
                 <div
                   className="relative w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
                   style={{
@@ -155,7 +155,10 @@ const Navbar = () => {
                       "linear-gradient(135deg, var(--color-primary), var(--color-secondary))",
                   }}
                 >
-                  <Code2 size={20} className="text-base-content" />
+                  <Code2
+                    size={20}
+                    className={theme === "black" ? "text-black" : "text-white"}
+                  />
                 </div>
               </motion.div>
               <div className="hidden sm:block">

@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSettings, useProfile } from "../../hooks/usePortfolioData";
+import { useTheme } from "../../hooks/useTheme";
 
 const socialIcons = {
   github: Github,
@@ -26,6 +27,7 @@ const socialIcons = {
 const Footer = () => {
   const { data: settings } = useSettings();
   const { data: profile } = useProfile();
+  const { theme } = useTheme(settings?.defaultTheme);
 
   const scrollToTop = () =>
     window.scrollTo({
@@ -48,13 +50,16 @@ const Footer = () => {
               <motion.div
                 whileHover={{ rotate: 8, scale: 1.08 }}
                 transition={{ type: "spring", stiffness: 300 }}
-                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-xl"
+                className="w-9 h-9 rounded-xl flex items-center justify-center shadow-xl"
                 style={{
                   background:
                     "linear-gradient(135deg, var(--color-primary), var(--color-secondary))",
                 }}
               >
-                <Code2 size={24} className="text-base-content" />
+                <Code2
+                  size={20}
+                  className={theme === "black" ? "text-black" : "text-white"}
+                />
               </motion.div>
 
               <div>

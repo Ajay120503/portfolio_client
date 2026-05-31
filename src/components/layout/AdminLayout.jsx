@@ -26,6 +26,8 @@ import {
 import toast from "react-hot-toast";
 
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../hooks/useTheme";
+import { useSettings, useProfile } from "../../hooks/usePortfolioData";
 
 const sidebarGroups = [
   {
@@ -68,6 +70,8 @@ const sidebarGroups = [
 const sidebarLinks = sidebarGroups.flatMap((group) => group.links);
 
 const Sidebar = ({ collapsed, admin, location, onLinkClick, onLogout }) => {
+  const { data: settings } = useSettings();
+  const { theme } = useTheme(settings?.defaultTheme);
   const isActive = (path, exact = false) =>
     exact ? location.pathname === path : location.pathname.startsWith(path);
 
@@ -77,7 +81,10 @@ const Sidebar = ({ collapsed, admin, location, onLinkClick, onLogout }) => {
       <div className="border-b border-base-200 p-5">
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-secondary text-white shadow-lg">
-            <Code2 size={21} />
+            <Code2
+              size={20}
+              className={theme === "black" ? "text-black" : "text-white"}
+            />
           </div>
           {!collapsed && (
             <div className="min-w-0">
@@ -179,6 +186,8 @@ const AdminLayout = () => {
   const { admin, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: settings } = useSettings();
+  const { theme } = useTheme(settings?.defaultTheme);
 
   const handleLogout = () => {
     logout();
@@ -229,7 +238,10 @@ const AdminLayout = () => {
             <div className="flex items-center justify-between border-b border-base-200 p-4">
               <div className="flex items-center gap-2">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-primary to-secondary text-white">
-                  <Code2 size={18} />
+                  <Code2
+                    size={20}
+                    className={theme === "black" ? "text-black" : "text-white"}
+                  />
                 </div>
                 <span className="font-bold tracking-tight">
                   Portfolio Admin
