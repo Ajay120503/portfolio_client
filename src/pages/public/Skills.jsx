@@ -274,9 +274,7 @@ export const SkillsSection = ({ showHero = true }) => {
   return (
     <section
       id="skills"
-      className={`public-hero relative overflow-hidden px-4 pb-16 sm:pb-20 md:pb-24 sm:px-6 lg:px-8 ${
-        showHero ? "pt-20 sm:pt-28" : "pt-16 sm:pt-24"
-      }`}
+      className={`public-hero relative overflow-hidden pt-10 px-4 pb-16 sm:pb-20 md:pb-24 sm:px-6 lg:px-8`}
     >
       <div className="relative mx-auto max-w-7xl">
         {showHero && (

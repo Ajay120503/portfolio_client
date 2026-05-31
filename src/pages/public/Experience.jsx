@@ -204,7 +204,7 @@ const Experience = () => {
 
       <div className="public-page min-h-screen text-base-content">
         <Navbar />
-        <main className="pt-20">
+        <main className="pt-10">
           <ExperienceSection />
         </main>
         <Footer />

@@ -317,9 +317,7 @@ export const ServicesSection = ({ showHero = true, showCta = true }) => {
   return (
     <section
       id="services"
-      className={`public-hero relative px-4 pb-16 sm:pb-20 md:pb-24 sm:px-6 lg:px-8 ${
-        showHero ? "pt-20 sm:pt-28" : "pt-16 sm:pt-24"
-      }`}
+      className={`public-hero relative pt-10 px-4 pb-16 sm:pb-20 md:pb-24 sm:px-6 lg:px-8`}
     >
       {/* <GridBackground /> */}
 

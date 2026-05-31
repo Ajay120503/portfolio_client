@@ -98,7 +98,7 @@ const ProjectDetail = () => {
         <Navbar />
 
         {/* ===== HERO ===== */}
-        <section className="public-hero relative pt-20 sm:pt-28 pb-10 sm:pb-12 md:pb-14 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <section className="public-hero relative pt-10 pb-10 sm:pb-12 md:pb-14 px-4 sm:px-6 lg:px-8 overflow-hidden">
           {/* Decorative background */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div

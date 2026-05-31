@@ -63,7 +63,7 @@ const About = () => {
         <Navbar />
 
         {/* ───────────── HERO ───────────── */}
-        <section className="relative pt-20 sm:pt-28 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <section className="relative pt-10 pb-16 sm:pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
           <div className="relative max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 sm:gap-10 lg:gap-16 items-center">
               {/* Avatar */}
@@ -125,11 +125,11 @@ const About = () => {
                 }}
                 className="lg:col-span-3 space-y-4 sm:space-y-6"
               >
-                <motion.div variants={fadeUp}>
+                {/* <motion.div variants={fadeUp}>
                   <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 text-primary mb-6">
                     <User size={40} />
                   </div>
-                </motion.div>
+                </motion.div> */}
 
                 <motion.h1
                   variants={fadeUp}

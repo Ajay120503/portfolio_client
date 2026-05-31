@@ -86,7 +86,7 @@ const Contact = () => {
         <Navbar />
 
         {/* HERO SECTION */}
-        <section className="public-hero relative pt-20 sm:pt-28 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
+        <section className="public-hero relative pt-10 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 lg:px-8">
           <div className="relative max-w-7xl mx-auto">
             {/* HEADER */}
             <motion.div

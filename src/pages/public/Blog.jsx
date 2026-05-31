@@ -42,7 +42,7 @@ const Blog = () => {
         <Navbar />
 
         {/* HERO SECTION */}
-        <section className="public-hero relative pt-20 sm:pt-28 pb-10 sm:pb-14 md:pb-16 px-4 sm:px-6 lg:px-8">
+        <section className="public-hero relative pt-10 pb-10 sm:pb-14 md:pb-16 px-4 sm:px-6 lg:px-8">
           <div className="relative max-w-7xl mx-auto">
             {/* HEADER */}
             <motion.div

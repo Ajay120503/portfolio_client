@@ -85,7 +85,7 @@ const BlogPost = () => {
         <Navbar />
 
         {/* HERO SECTION */}
-        <section className="public-hero relative pt-20 sm:pt-28 pb-10 sm:pb-12 md:pb-14 px-4 sm:px-6 lg:px-8">
+        <section className="public-hero relative pt-10 pb-10 sm:pb-12 md:pb-14 px-4 sm:px-6 lg:px-8">
           <div className="relative max-w-5xl mx-auto">
             {/* BACK BUTTON */}
             <motion.div
