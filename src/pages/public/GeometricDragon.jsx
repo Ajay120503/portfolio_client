@@ -19,9 +19,10 @@ const GeometricDragon = () => {
     resize();
     window.addEventListener("resize", resize);
 
-    const C1 = theme === "black" ? "#C6FF34" : "#2563eb";
-    const C2 = theme === "black" ? "#9FE870" : "#0ea5e9";
-    const C3 = theme === "black" ? "#ffffff" : "#6366f1";
+    // Black theme — high contrast neon on dark
+    const C1 = theme === "black" ? "#C6FF34" : "#1D4ED8"; // lime / deep blue
+    const C2 = theme === "black" ? "#39FF14" : "#0891B2"; // neon green / cyan
+    const C3 = theme === "black" ? "#CCFF00" : "#7C3AED"; // yellow-lime / purple
 
     // Mouse position
     const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
@@ -60,7 +61,6 @@ const GeometricDragon = () => {
     };
 
     const dragons = [
-      // Fastest — sticks close to cursor
       makeDragon({
         segments: 80,
         segLen: 18,
@@ -70,7 +70,6 @@ const GeometricDragon = () => {
         followSpeed: 0.12,
         offset: { x: 0, y: 0 },
       }),
-      // Medium — lags behind
       makeDragon({
         segments: 50,
         segLen: 14,
@@ -80,7 +79,6 @@ const GeometricDragon = () => {
         followSpeed: 0.06,
         offset: { x: 40, y: -30 },
       }),
-      // Slowest — trails far behind
       makeDragon({
         segments: 35,
         segLen: 22,
@@ -136,7 +134,7 @@ const GeometricDragon = () => {
       ctx.lineTo(-10 * hs, 0);
       ctx.lineTo(0, -7 * hs);
       ctx.closePath();
-      ctx.globalAlpha = 0.22;
+      ctx.globalAlpha = 0.55; // was 0.22  (head diamond)
       ctx.strokeStyle = d.color;
       ctx.lineWidth = 1;
       ctx.stroke();
@@ -146,14 +144,14 @@ const GeometricDragon = () => {
       ctx.lineTo(17 * hs, -13 * hs);
       ctx.moveTo(10 * hs, 5 * hs);
       ctx.lineTo(17 * hs, 13 * hs);
-      ctx.globalAlpha = 0.14;
+      ctx.globalAlpha = 0.35; // was 0.14  (horns)
       ctx.lineWidth = 0.8;
       ctx.stroke();
 
       ctx.beginPath();
       ctx.arc(8 * hs, 0, 1.5 * hs, 0, Math.PI * 2);
       ctx.fillStyle = d.color;
-      ctx.globalAlpha = 0.4;
+      ctx.globalAlpha = 0.75; // was 0.4   (eye)
       ctx.fill();
 
       ctx.restore();
@@ -168,7 +166,7 @@ const GeometricDragon = () => {
         const dy = prev.y - s.y;
         const a = Math.atan2(dy, dx);
         const w = (1 - t) * 11 * d.headScale + 1.5;
-        const op = (1 - t) * 0.16 + 0.015;
+        const op = (1 - t) * 0.35 + 0.04; // was 0.16 + 0.015
         const pulse = 1 + Math.sin(d.time * 2.5 - i * 0.18) * 0.07;
 
         ctx.save();
@@ -207,7 +205,7 @@ const GeometricDragon = () => {
         const dy = prev.y - s.y;
         const a = Math.atan2(dy, dx);
         const w = (1 - t) * 7 * d.headScale + 1;
-        const op = (1 - t) * 0.14 + 0.01;
+        const op = (1 - t) * 0.3 + 0.03; // was 0.14 + 0.01
         const wave = Math.sin(d.time * 3 - i * 0.25) * 3;
 
         ctx.save();
@@ -242,7 +240,7 @@ const GeometricDragon = () => {
       for (let i = d.segments - 1; i >= 1; i--) {
         const t = i / d.segments;
         const s = d.spine[i];
-        const op = (1 - t) * 0.12 + 0.01;
+        const op = (1 - t) * 0.28 + 0.03; // was 0.12 + 0.01
         const r = (1 - t) * 8 * d.headScale + 1;
         const pulse = 1 + Math.sin(d.time * 2 - i * 0.2) * 0.1;
 

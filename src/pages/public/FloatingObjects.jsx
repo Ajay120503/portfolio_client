@@ -40,9 +40,10 @@ const FloatingDesignObjects = () => {
     resize();
     window.addEventListener("resize", resize);
 
-    const C1 = theme === "black" ? "#C6FF34" : "#2563eb";
-    const C2 = theme === "black" ? "#9FE870" : "#0ea5e9";
-    const C3 = theme === "black" ? "#ffffff" : "#6366f1";
+    // Black theme — high contrast neon on dark
+    const C1 = theme === "black" ? "#C6FF34" : "#1D4ED8"; // lime / deep blue
+    const C2 = theme === "black" ? "#39FF14" : "#0891B2"; // neon green / cyan
+    const C3 = theme === "black" ? "#CCFF00" : "#7C3AED"; // yellow-lime / purple
 
     const colorSets = [
       { color: C1, opacity: 0.22 },
