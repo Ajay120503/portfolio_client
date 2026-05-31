@@ -113,7 +113,7 @@ const Footer = () => {
             <div className="flex flex-col gap-3">
               {[...(settings?.navLinks || [])]
                 .sort((a, b) => (a.order || 0) - (b.order || 0))
-                .slice(0, 10)
+                .slice(0, 5)
                 .map((link) => {
                   // const isHash = link?.href?.startsWith("/");
 

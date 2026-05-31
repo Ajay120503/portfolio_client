@@ -1,41 +1,8 @@
 @import "tailwindcss";
-/* @plugin "daisyui" {
-  themes: light --default, dark --prefersdark;
-} */
 
 @plugin "daisyui" {
   themes: light --default, black --prefersdark;
 }
-
-/* @plugin "daisyui/theme" {
-  name: "light";
-  default: true;
-  color-scheme: light;
-  --color-base-100: #ffffff;
-  --color-base-200: #f7f8fb;
-  --color-base-300: #e4e7ee;
-  --color-base-content: #111827;
-  --color-primary: #2563eb;
-  --color-primary-content: #ffffff;
-  --color-secondary: #0f766e;
-  --color-secondary-content: #ffffff;
-  --color-accent: #c2410c;
-  --color-accent-content: #ffffff;
-  --color-neutral: #111827;
-  --color-neutral-content: #f9fafb;
-  --color-info: #0284c7;
-  --color-info-content: #ffffff;
-  --color-success: #15803d;
-  --color-success-content: #ffffff;
-  --color-warning: #b45309;
-  --color-warning-content: #ffffff;
-  --color-error: #dc2626;
-  --color-error-content: #ffffff;
-  --radius-selector: 0.7rem;
-  --radius-field: 0.65rem;
-  --radius-box: 0.8rem;
-  --border: 1px;
-} */
 
 @plugin "daisyui/theme" {
   name: "light";
@@ -76,36 +43,6 @@
   --radius-box: 0.8rem;
   --border: 1px;
 }
-
-/* @plugin "daisyui/theme" {
-  name: "dark";
-  prefersdark: true;
-  color-scheme: dark;
-  --color-base-100: #0b1020;
-  --color-base-200: #111827;
-  --color-base-300: #243047;
-  --color-base-content: #f8fafc;
-  --color-primary: #60a5fa;
-  --color-primary-content: #08111f;
-  --color-secondary: #2dd4bf;
-  --color-secondary-content: #041916;
-  --color-accent: #fb923c;
-  --color-accent-content: #1f0c02;
-  --color-neutral: #e5e7eb;
-  --color-neutral-content: #111827;
-  --color-info: #38bdf8;
-  --color-info-content: #07131b;
-  --color-success: #4ade80;
-  --color-success-content: #06150b;
-  --color-warning: #facc15;
-  --color-warning-content: #171301;
-  --color-error: #f87171;
-  --color-error-content: #1f0808;
-  --radius-selector: 0.7rem;
-  --radius-field: 0.65rem;
-  --radius-box: 0.8rem;
-  --border: 1px;
-} */
 
 @plugin "daisyui/theme" {
   name: "black";
@@ -173,17 +110,6 @@ body {
   position: relative;
   isolation: isolate;
   background:
-    linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 4%, transparent), transparent 330px),
-    radial-gradient(circle at top left, color-mix(in srgb, var(--color-primary) 8%, transparent), transparent 340px),
-    radial-gradient(circle at 85% 20%, color-mix(in srgb, var(--color-secondary) 8%, transparent), transparent 300px),
-    var(--color-base-100);
-  color: var(--color-base-content);
-} */
-
-.public-page {
-  position: relative;
-  isolation: isolate;
-  background:
     linear-gradient(
       180deg,
       color-mix(in srgb, var(--color-primary) 4%, transparent),
@@ -200,7 +126,6 @@ body {
       transparent 300px
     ),
     var(--color-base-100);
-
   color: var(--color-base-content);
 }
 
@@ -220,19 +145,7 @@ body {
     linear-gradient(to bottom, black, transparent 88%);
 }
 
-/* .public-page::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.62;
-  background:
-    radial-gradient(circle at 16% 18%, color-mix(in srgb, var(--color-primary) 12%, transparent), transparent 28rem),
-    radial-gradient(circle at 88% 24%, color-mix(in srgb, var(--color-secondary) 10%, transparent), transparent 30rem),
-    radial-gradient(circle at 52% 86%, color-mix(in srgb, var(--color-accent) 7%, transparent), transparent 34rem);
-} */
-
+/* ✅ Fixed: uses var(--color-primary) instead of hardcoded lime */
 .public-page::after {
   content: "";
   position: fixed;
@@ -240,21 +153,20 @@ body {
   z-index: 0;
   pointer-events: none;
   opacity: 0.55;
-
   background:
     radial-gradient(
       circle at 15% 20%,
-      rgba(198, 255, 52, 0.14),
+      color-mix(in srgb, var(--color-primary) 14%, transparent),
       transparent 30rem
     ),
     radial-gradient(
       circle at 85% 25%,
-      rgba(198, 255, 52, 0.1),
+      color-mix(in srgb, var(--color-primary) 10%, transparent),
       transparent 28rem
     ),
     radial-gradient(
       circle at 50% 90%,
-      rgba(198, 255, 52, 0.08),
+      color-mix(in srgb, var(--color-primary) 8%, transparent),
       transparent 35rem
     );
 }
@@ -291,7 +203,11 @@ body {
   inset: 0;
   pointer-events: none;
   opacity: 0.18;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--color-base-100) 24%, transparent), transparent 70%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-base-100) 24%, transparent),
+    transparent 70%
+  );
   mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
 
@@ -330,54 +246,50 @@ body {
 }
 
 .public-gradient-text {
-  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-primary));
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary),
+    var(--color-primary)
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* .public-card {
-  border: 1px solid color-mix(in srgb, var(--color-base-content) 10%, transparent);
-  background: color-mix(in srgb, var(--color-base-100) 86%, transparent);
-  box-shadow: 0 14px 40px color-mix(in srgb, black 7%, transparent);
-  backdrop-filter: blur(14px);
-} */
-
+/* ✅ Fixed: shadow uses theme-aware color-mix instead of hardcoded black */
 .public-card {
-  border: 1px solid rgba(198, 255, 52, 0.08);
+  border: 1px solid color-mix(in srgb, var(--color-primary) 10%, transparent);
   background: color-mix(in srgb, var(--color-base-100) 92%, transparent);
-
   box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
+    0 10px 30px color-mix(in srgb, var(--color-base-content) 8%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--color-base-content) 4%, transparent);
   backdrop-filter: blur(16px);
 }
 
 .public-card-hover {
-  transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease, background 220ms ease;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease;
 }
 
-/* .public-card-hover:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
-  box-shadow: 0 24px 80px color-mix(in srgb, var(--color-primary) 14%, transparent);
-} */
-
+/* ✅ Fixed: hover shadow uses var(--color-primary) instead of hardcoded lime */
 .public-card-hover:hover {
   transform: translateY(-6px);
-
-  border-color: rgba(198, 255, 52, 0.3);
-
+  border-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
   box-shadow:
-    0 25px 60px rgba(198, 255, 52, 0.12),
-    0 0 40px rgba(198, 255, 52, 0.08);
+    0 25px 60px color-mix(in srgb, var(--color-primary) 12%, transparent),
+    0 0 40px color-mix(in srgb, var(--color-primary) 8%, transparent);
 }
 
 .public-image-frame {
   border: 1px solid color-mix(in srgb, var(--color-base-content) 10%, transparent);
   background: color-mix(in srgb, var(--color-base-200) 82%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, white 16%, transparent), 0 24px 80px color-mix(in srgb, black 12%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 16%, transparent),
+    0 24px 80px color-mix(in srgb, black 12%, transparent);
 }
 
 .public-input {
@@ -466,7 +378,6 @@ body {
 
 .rotating-name {
   grid-template-areas: "stack";
-  /* min-width: 12ch; */
 }
 
 .rotating-name > span {
