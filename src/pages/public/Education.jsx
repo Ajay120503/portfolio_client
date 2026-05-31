@@ -40,7 +40,7 @@ export const EducationSection = () => {
       {/* Background decoration */}
       {/* <div className="absolute inset-0 bg-linear-to-b from-base-100/55 via-base-200/20 to-base-100/55" /> */}
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 mb-20">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -178,7 +178,7 @@ const Education = () => {
 
       <div className="public-page min-h-screen text-base-content">
         <Navbar />
-        <main className="py-20">
+        <main className="pt-20">
           <EducationSection />
         </main>
         <Footer />

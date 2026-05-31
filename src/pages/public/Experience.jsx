@@ -21,7 +21,7 @@ export const ExperienceSection = () => {
 
   if (isLoading) {
     return (
-      <section id="experience" className="py-24">
+      <section id="experience" className="py-20">
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
             <span className="loading loading-spinner loading-lg text-primary"></span>
@@ -33,7 +33,7 @@ export const ExperienceSection = () => {
 
   return (
     <section id="experience" className="public-hero relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 mb-20">
         {/* HEADER */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
@@ -204,7 +204,7 @@ const Experience = () => {
 
       <div className="public-page min-h-screen text-base-content">
         <Navbar />
-        <main className="py-20">
+        <main className="pt-20">
           <ExperienceSection />
         </main>
         <Footer />
