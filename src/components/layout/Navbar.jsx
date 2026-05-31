@@ -155,7 +155,7 @@ const Navbar = () => {
                       "linear-gradient(135deg, var(--color-primary), var(--color-secondary))",
                   }}
                 >
-                  <Code2 size={20} />
+                  <Code2 size={20} className="text-base-content" />
                 </div>
               </motion.div>
               <div className="hidden sm:block">

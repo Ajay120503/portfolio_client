@@ -54,7 +54,7 @@ const Footer = () => {
                     "linear-gradient(135deg, var(--color-primary), var(--color-secondary))",
                 }}
               >
-                <Code2 size={24} />
+                <Code2 size={24} className="text-base-content" />
               </motion.div>
 
               <div>
