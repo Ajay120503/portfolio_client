@@ -288,7 +288,12 @@ const Navbar = () => {
                           "linear-gradient(135deg, var(--color-primary), var(--color-secondary))",
                       }}
                     >
-                      <Code2 size={20} className="text-white" />
+                      <Code2
+                        size={20}
+                        className={
+                          theme === "black" ? "text-black" : "text-white"
+                        }
+                      />
                     </div>
                     <div>
                       <h2 className="font-black text-base">{brandName}</h2>
