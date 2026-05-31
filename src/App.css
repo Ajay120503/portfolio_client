@@ -169,7 +169,7 @@ body {
   font-family: var(--portfolio-font-family);
 }
 
-/* .public-page {
+.public-page {
   position: relative;
   isolation: isolate;
   background:

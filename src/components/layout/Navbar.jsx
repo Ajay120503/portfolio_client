@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { useProfile, useSettings } from "../../hooks/usePortfolioData";
 import { useTheme } from "../../hooks/useTheme";
+import { settingsAPI } from "../../api";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,6 +22,29 @@ const Navbar = () => {
   const { data: profile } = useProfile();
   const { theme, toggleTheme } = useTheme(settings?.defaultTheme);
   const location = useLocation();
+
+  const queryClient = useQueryClient();
+
+  const blackFirstColor = "#C6FF34";
+  const lightFirstColor = "#21AECC";
+
+  const handleThemeToggle = async () => {
+    const next = theme === "black" ? "light" : "black";
+    const firstColor = next === "black" ? blackFirstColor : lightFirstColor;
+
+    toggleTheme();
+
+    try {
+      await settingsAPI.update({
+        ...settings,
+        defaultTheme: next,
+        themeColor: firstColor,
+      });
+      await queryClient.invalidateQueries({ queryKey: ["settings"] });
+    } catch (error) {
+      console.error("Failed to save theme:", error);
+    }
+  };
 
   const brandName =
     profile?.fullName ||
@@ -176,7 +201,7 @@ const Navbar = () => {
               {/* Theme Toggle */}
               <motion.button
                 whileTap={{ scale: 0.92 }}
-                onClick={toggleTheme}
+                onClick={handleThemeToggle}
                 className="btn btn-sm btn-circle rounded-xl public-card bg-base-100/50 backdrop-blur-sm text-base-content/70 hover:bg-primary/10 hover:text-primary hover:public-card transition-all"
                 aria-label="Toggle theme"
               >
@@ -192,7 +217,6 @@ const Navbar = () => {
                   </motion.div>
                 </AnimatePresence>
               </motion.button>
-
               {/* Admin Button (Desktop) */}
               <Link
                 to="/admin"
@@ -209,7 +233,6 @@ const Navbar = () => {
                   className="group-hover:translate-x-0.5 transition-transform"
                 />
               </Link>
-
               {/* Mobile Menu Toggle */}
               <motion.button
                 whileTap={{ scale: 0.92 }}

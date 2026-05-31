@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { useTheme } from "../../hooks/useTheme";
 
 import {
   Save,
@@ -21,15 +22,24 @@ import {
 import { settingsAPI } from "../../api";
 import { useSettings } from "../../hooks/usePortfolioData";
 
-const presetColors = [
-  "#2563eb",
-  "#0f766e",
-  "#c2410c",
-  "#7c3aed",
-  "#be123c",
-  "#15803d",
-  "#0369a1",
-  "#a16207",
+const blackThemeColors = [
+  "#C6FF34", // Lime
+  "#84CC16",
+  "#22C55E",
+  "#06B6D4",
+  "#3B82F6",
+  "#8B5CF6",
+  "#F59E0B",
+  "#EF4444",
+  "#FFFFFF",
+];
+
+const lightThemeColors = [
+  "#21AECC",
+  "#3B82F6",
+  "#0EA5E9",
+  "#06B6D4",
+  "#2563EB",
 ];
 
 const fontOptions = [
@@ -47,9 +57,18 @@ const ManageSettings = () => {
   const [saving, setSaving] = useState(false);
   const [navLinks, setNavLinks] = useState([]);
 
+  // useForm MUST be called first before using watch()
   const { register, handleSubmit, reset, watch, setValue } = useForm();
 
+  const { setTheme } = useTheme(settings?.defaultTheme || "black");
+
+  // Now watch() is available to use
+  const selectedTheme = watch("defaultTheme");
   const themeColor = watch("themeColor");
+
+  // presetColors now reactively updates when selectedTheme changes
+  const presetColors =
+    selectedTheme === "black" ? blackThemeColors : lightThemeColors;
 
   useEffect(() => {
     if (settings) {
@@ -72,13 +91,57 @@ const ManageSettings = () => {
     }
   }, [settings, reset]);
 
+  // useEffect(() => {
+  //   if (themeColor) {
+  //     document.documentElement.style.setProperty("--color-primary", themeColor);
+  //   }
+  // }, [themeColor]);
+
+  // useEffect(() => {
+  //   if (!themeColor) return;
+  //   document.documentElement.style.setProperty("--color-primary", themeColor);
+  //   window.dispatchEvent(
+  //     new CustomEvent("portfolio-preview-change", {
+  //       detail: { color: themeColor },
+  //     })
+  //   );
+  // }, [themeColor]);
+
+  // useEffect(() => {
+  //   if (!selectedTheme) return;
+  //   window.dispatchEvent(
+  //     new CustomEvent("portfolio-preview-change", {
+  //       detail: { theme: selectedTheme },
+  //     })
+  //   );
+  // }, [selectedTheme]);
+
   useEffect(() => {
-    if (themeColor) {
-      document.documentElement.style.setProperty("--color-primary", themeColor);
-    }
+    if (!themeColor) return;
+    document.documentElement.style.setProperty("--color-primary", themeColor);
+    window.dispatchEvent(
+      new CustomEvent("portfolio-preview-change", {
+        detail: { color: themeColor },
+      })
+    );
   }, [themeColor]);
 
+  useEffect(() => {
+    if (!selectedTheme) return;
+    const firstColor =
+      selectedTheme === "black" ? blackThemeColors[0] : lightThemeColors[0];
+    setTheme(selectedTheme);
+    setValue("themeColor", firstColor);
+  }, [selectedTheme]);
+
   const onSubmit = async (data) => {
+    const hexRegex = /^#([A-Fa-f0-9]{6})$/;
+
+    if (!hexRegex.test(data.themeColor)) {
+      toast.error("Please enter a valid HEX color");
+      setSaving(false);
+      return;
+    }
     setSaving(true);
     try {
       const payload = {
@@ -177,7 +240,7 @@ const ManageSettings = () => {
                   {...register("defaultTheme")}
                   className="select select-bordered rounded-xl"
                 >
-                  <option value="black">black</option>
+                  <option value="black">Black</option>
                   <option value="light">Light</option>
                 </select>
               </div>
@@ -253,30 +316,58 @@ const ManageSettings = () => {
             </div>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[auto,1fr] lg:items-start">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <input
+              type="color"
+              value={themeColor || "#C6FF34"}
+              onChange={(e) => setValue("themeColor", e.target.value)}
+              className="h-16 w-16 cursor-pointer rounded-2xl border-2 border-base-300 bg-transparent shadow-sm"
+            />
+
+            <div className="flex-1">
+              <label className="label">
+                <span className="label-text font-medium">Hex Color</span>
+              </label>
+
               <input
-                type="color"
-                {...register("themeColor")}
-                className="h-16 w-16 cursor-pointer rounded-2xl border-2 border-base-300 bg-transparent shadow-sm"
+                type="text"
+                value={themeColor || ""}
+                onChange={(e) => {
+                  let value = e.target.value.toUpperCase();
+                  if (!value.startsWith("#")) {
+                    value = "#" + value;
+                  }
+                  setValue("themeColor", value);
+                }}
+                placeholder="#C6FF34"
+                className="input input-bordered rounded-xl font-mono w-full"
               />
-              <div>
-                <p className="font-bold text-lg font-mono">{themeColor}</p>
-                <p className="text-sm text-base-content/60">Active primary</p>
-              </div>
+
+              <p className="text-sm text-base-content/60 mt-2">
+                Current Color: <span className="font-bold">{themeColor}</span>
+              </p>
             </div>
+          </div>
+
+          <div className="mt-4">
+            <p className="text-sm text-base-content/60 mb-3">
+              Preset colors for{" "}
+              <span className="font-semibold capitalize">{selectedTheme}</span>{" "}
+              theme
+            </p>
             <div className="flex flex-wrap gap-2">
               {presetColors.map((color) => (
                 <button
                   key={color}
                   type="button"
-                  onClick={() => {
-                    setValue("themeColor", color);
-                    document.documentElement.style.setProperty(
-                      "--color-primary",
-                      color
-                    );
-                  }}
+                  // onClick={() => {
+                  //   setValue("themeColor", color);
+                  //   document.documentElement.style.setProperty(
+                  //     "--color-primary",
+                  //     color
+                  //   );
+                  // }}
+                  onClick={() => setValue("themeColor", color)}
                   className={`h-10 w-10 rounded-xl border-4 transition-all hover:scale-105 ${
                     themeColor === color
                       ? "border-white shadow-lg scale-110 ring-2 ring-primary/50"

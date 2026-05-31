@@ -2,14 +2,17 @@ import { useState, useEffect } from 'react';
 
 const THEME_EVENT = 'portfolio-theme-change';
 
+const blackFirstColor = '#C6FF34';
+const lightFirstColor = '#21AECC';
+
 export const useTheme = (defaultTheme = 'black') => {
-  const [theme, setTheme] = useState(() => {
+  const [theme, setThemeState] = useState(() => {
     return localStorage.getItem('portfolio_theme') || defaultTheme;
   });
 
   useEffect(() => {
     const syncTheme = () => {
-      setTheme(localStorage.getItem('portfolio_theme') || defaultTheme);
+      setThemeState(localStorage.getItem('portfolio_theme') || defaultTheme);
     };
 
     window.addEventListener('storage', syncTheme);
@@ -31,14 +34,23 @@ export const useTheme = (defaultTheme = 'black') => {
     localStorage.setItem('portfolio_theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => {
-      const next = prev === 'black' ? 'light' : 'black';
-      localStorage.setItem('portfolio_theme', next);
-      window.dispatchEvent(new Event(THEME_EVENT));
-      return next;
-    });
+  const setTheme = (newTheme, updateColor = false) => {
+    setThemeState(newTheme);
+    localStorage.setItem('portfolio_theme', newTheme);
+    window.dispatchEvent(new Event(THEME_EVENT));
+
+    // Only update color when called from toggle button (not from ManageSettings)
+    if (updateColor) {
+      const firstColor = newTheme === 'black' ? blackFirstColor : lightFirstColor;
+      document.documentElement.style.setProperty('--color-primary', firstColor);
+      localStorage.setItem('portfolio_theme_color', firstColor);
+    }
   };
 
-  return { theme, toggleTheme, isDark: theme === 'black' };
+  const toggleTheme = () => {
+    const next = theme === 'black' ? 'light' : 'black';
+    setTheme(next, true); // true = also update color
+  };
+
+  return { theme, toggleTheme, setTheme, isDark: theme === 'black' };
 };
