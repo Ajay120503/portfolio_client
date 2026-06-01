@@ -5,18 +5,7 @@ import { Quote, Star, Building2, Users } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import { useSettings } from "../../hooks/usePortfolioData";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-
-const useTestimonials = () => {
-  return useQuery({
-    queryKey: ["testimonials"],
-    queryFn: async () => {
-      const { data } = await axios.get("/api/testimonials");
-      return data.data;
-    },
-  });
-};
+import { useTestimonials } from "../../hooks/usePortfolioData";
 
 const StarRating = ({ rating }) => {
   return (
