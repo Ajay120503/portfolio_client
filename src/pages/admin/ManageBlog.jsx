@@ -25,6 +25,14 @@ import { ConfirmModal } from "../../components/ui/Modal";
 import ImageUpload from "../../components/ui/ImageUpload";
 import RichTextEditor from "../../components/ui/RichTextEditor.jsx";
 
+// Helper to strip HTML tags
+const stripHtml = (html) => {
+  if (!html) return '';
+  const tmp = document.createElement('div');
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || '';
+};
+
 const ManageBlog = () => {
   const { data, isLoading } = useBlogs();
   const blogPosts = Array.isArray(data)
@@ -82,13 +90,28 @@ const ManageBlog = () => {
     onError: () => toast.error("Failed to delete post"),
   });
 
+  // const startEdit = (item) => {
+  //   setEditing(item);
+  //   setShowForm(true);
+  //   setValue("title", item.title || "");
+  //   setValue("slug", item.slug || "");
+  //   setValue("excerpt", item.excerpt || "");
+  //   setValue("content", item.content || "");
+  //   setValue("tags", item.tags?.join(", ") || "");
+  //   setValue("category", item.category || "");
+  //   setValue("published", item.published || false);
+  //   setValue("featured", item.featured || false);
+  //   window.scrollTo({ top: 0, behavior: "smooth" });
+  // };
+
   const startEdit = (item) => {
     setEditing(item);
     setShowForm(true);
     setValue("title", item.title || "");
     setValue("slug", item.slug || "");
     setValue("excerpt", item.excerpt || "");
-    setValue("content", item.content || "");
+    // Strip HTML when populating the editor
+    setValue("content", stripHtml(item.content) || "");
     setValue("tags", item.tags?.join(", ") || "");
     setValue("category", item.category || "");
     setValue("published", item.published || false);
@@ -101,6 +124,32 @@ const ManageBlog = () => {
     setEditing(null);
     reset({ published: false, featured: false });
   };
+
+  // const onSubmit = (data) => {
+  //   const formData = new FormData();
+  //   Object.entries(data).forEach(([k, v]) => {
+  //     if (k === "coverImage" && v && v[0] instanceof File) {
+  //       formData.append(k, v[0]);
+  //     } else if (k === "tags") {
+  //       formData.append(
+  //         k,
+  //         JSON.stringify(
+  //           v
+  //             ?.split(",")
+  //             .map((tag) => tag.trim())
+  //             .filter(Boolean) || []
+  //         )
+  //       );
+  //     } else {
+  //       formData.append(k, v ?? "");
+  //     }
+  //   });
+  //   if (editing) {
+  //     updateMut.mutate({ id: editing._id, data: formData });
+  //   } else {
+  //     createMut.mutate(formData);
+  //   }
+  // };
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -117,6 +166,10 @@ const ManageBlog = () => {
               .filter(Boolean) || []
           )
         );
+      } else if (k === "content") {
+        // Strip HTML before saving
+        const plainText = stripHtml(v);
+        formData.append(k, plainText);
       } else {
         formData.append(k, v ?? "");
       }
