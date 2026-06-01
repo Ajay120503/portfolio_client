@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -58,6 +58,63 @@ const HeroSkeleton = () => (
     </div>
   </section>
 );
+
+const TypingText = ({
+  texts = [],
+  speed = 80,
+  deleteSpeed = 40,
+  pause = 1800,
+}) => {
+  const [displayed, setDisplayed] = useState("");
+  const [index, setIndex] = useState(0);
+  const [typing, setTyping] = useState(true);
+  const [waiting, setWaiting] = useState(false);
+
+  useEffect(() => {
+    if (!texts.length) return;
+    const current = texts[index];
+
+    if (waiting) {
+      const t = setTimeout(() => {
+        setWaiting(false);
+        setTyping(false);
+      }, pause);
+      return () => clearTimeout(t);
+    }
+
+    if (typing) {
+      if (displayed.length < current.length) {
+        const t = setTimeout(() => {
+          setDisplayed(current.slice(0, displayed.length + 1));
+        }, speed);
+        return () => clearTimeout(t);
+      } else {
+        setWaiting(true);
+      }
+    } else {
+      if (displayed.length > 0) {
+        const t = setTimeout(() => {
+          setDisplayed(displayed.slice(0, -1));
+        }, deleteSpeed);
+        return () => clearTimeout(t);
+      } else {
+        setIndex((i) => (i + 1) % texts.length);
+        setTyping(true);
+      }
+    }
+  }, [displayed, typing, waiting, index, texts, speed, deleteSpeed, pause]);
+
+  return (
+    <span className="relative inline-block">
+      <span className="public-gradient-text">{displayed}</span>
+      {/* Cursor */}
+      <span
+        className="inline-block w-0.5 h-[0.85em] bg-primary align-middle ml-0.5 animate-pulse"
+        style={{ verticalAlign: "middle" }}
+      />
+    </span>
+  );
+};
 
 // --- Hero Section (Improved) ---
 const HeroSection = ({ profile }) => {
@@ -131,7 +188,7 @@ const HeroSection = ({ profile }) => {
                     as
                   </span>
                   {/* Rotating text */}
-                  <span
+                  {/* <span
                     className="rotating-name inline-grid align-bottom overflow-hidden"
                     style={{ minWidth: "10ch" }}
                   >
@@ -141,7 +198,18 @@ const HeroSection = ({ profile }) => {
                     <span className="public-gradient-text">
                       {profile?.tagline || "Creator"}
                     </span>
-                  </span>
+                  </span> */}
+                  <TypingText
+                    texts={[
+                      profile?.fullName || "Developer",
+                      profile?.tagline || "Creator",
+                      profile?.subTagline?.split(" ").slice(0, 3).join(" ") ||
+                        "Problem Solver",
+                    ]}
+                    speed={75}
+                    deleteSpeed={35}
+                    pause={2000}
+                  />
                 </span>
               </h1>
             </div>

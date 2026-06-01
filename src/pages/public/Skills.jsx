@@ -1,290 +1,414 @@
-// Skills.jsx — drop-in replacement for your portfolio's Skills page.
-// Requires: npm i react-simple-maps d3-geo
-// Keeps your existing hooks, layout, DaisyUI tokens, framer-motion and Helmet.
-
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { Code2 } from "lucide-react";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { Code2, RotateCcw } from "lucide-react";
 
 import Navbar from "../../components/layout/Navbar";
 import Footer from "../../components/layout/Footer";
 import { useSettings, useSkills } from "../../hooks/usePortfolioData";
+import { useTheme } from "../../hooks/useTheme";
 
-// Public world atlas (countries) — uses UN M49 numeric codes as geo.id.
-const GEO_URL =
-  "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
-
-const REGIONS = {
-  "North America": {},
-  "South America": {},
-  Europe: {},
-  Africa: {},
-  Asia: {},
-  Oceania: {},
+// Category cluster positions in 3D space
+const CLUSTERS = {
+  frontend: { cx: 1.2, cy: -0.8, cz: 0.0 },
+  backend: { cx: -1.2, cy: 0.2, cz: 0.5 },
+  database: { cx: 0.2, cy: 1.2, cz: -0.8 },
+  devops: { cx: -0.5, cy: -1.0, cz: -1.0 },
+  tools: { cx: 1.0, cy: 0.8, cz: 1.0 },
+  mobile: { cx: -0.8, cy: -0.5, cz: 0.8 },
+  design: { cx: 0.5, cy: -1.2, cz: 0.5 },
+  other: { cx: 0.0, cy: 0.0, cz: 0.0 },
 };
 
-// UN M49 numeric country code -> continent. Matches world-atlas geo.id.
-const COUNTRY_TO_REGION = {
-  // North America
-  840: "North America",
-  124: "North America",
-  484: "North America",
-  320: "North America",
-  "084": "North America",
-  222: "North America",
-  340: "North America",
-  558: "North America",
-  188: "North America",
-  591: "North America",
-  192: "North America",
-  332: "North America",
-  214: "North America",
-  388: "North America",
-  "044": "North America",
-  780: "North America",
-  630: "North America",
-  304: "North America",
-  // South America
-  "076": "South America",
-  "032": "South America",
-  152: "South America",
-  604: "South America",
-  170: "South America",
-  862: "South America",
-  218: "South America",
-  "068": "South America",
-  600: "South America",
-  858: "South America",
-  328: "South America",
-  740: "South America",
-  254: "South America",
-  238: "South America",
-  // Europe
-  826: "Europe",
-  372: "Europe",
-  250: "Europe",
-  276: "Europe",
-  724: "Europe",
-  620: "Europe",
-  380: "Europe",
-  528: "Europe",
-  "056": "Europe",
-  442: "Europe",
-  756: "Europe",
-  "040": "Europe",
-  616: "Europe",
-  203: "Europe",
-  703: "Europe",
-  348: "Europe",
-  642: "Europe",
-  100: "Europe",
-  300: "Europe",
-  191: "Europe",
-  705: "Europe",
-  "070": "Europe",
-  688: "Europe",
-  499: "Europe",
-  807: "Europe",
-  "008": "Europe",
-  983: "Europe",
-  208: "Europe",
-  578: "Europe",
-  752: "Europe",
-  246: "Europe",
-  352: "Europe",
-  233: "Europe",
-  428: "Europe",
-  440: "Europe",
-  112: "Europe",
-  804: "Europe",
-  498: "Europe",
-  643: "Europe",
-  // Africa
-  818: "Africa",
-  434: "Africa",
-  788: "Africa",
-  "012": "Africa",
-  504: "Africa",
-  732: "Africa",
-  478: "Africa",
-  686: "Africa",
-  270: "Africa",
-  324: "Africa",
-  624: "Africa",
-  694: "Africa",
-  430: "Africa",
-  384: "Africa",
-  288: "Africa",
-  768: "Africa",
-  204: "Africa",
-  566: "Africa",
-  562: "Africa",
-  466: "Africa",
-  854: "Africa",
-  148: "Africa",
-  120: "Africa",
-  140: "Africa",
-  226: "Africa",
-  266: "Africa",
-  178: "Africa",
-  180: "Africa",
-  "024": "Africa",
-  894: "Africa",
-  716: "Africa",
-  508: "Africa",
-  454: "Africa",
-  516: "Africa",
-  "072": "Africa",
-  710: "Africa",
-  426: "Africa",
-  748: "Africa",
-  450: "Africa",
-  834: "Africa",
-  404: "Africa",
-  800: "Africa",
-  646: "Africa",
-  108: "Africa",
-  231: "Africa",
-  232: "Africa",
-  262: "Africa",
-  706: "Africa",
-  729: "Africa",
-  728: "Africa",
-  // Asia
-  792: "Asia",
-  196: "Asia",
-  760: "Asia",
-  422: "Asia",
-  376: "Asia",
-  275: "Asia",
-  400: "Asia",
-  368: "Asia",
-  364: "Asia",
-  682: "Asia",
-  887: "Asia",
-  512: "Asia",
-  784: "Asia",
-  634: "Asia",
-  "048": "Asia",
-  414: "Asia",
-  268: "Asia",
-  "051": "Asia",
-  "031": "Asia",
-  398: "Asia",
-  795: "Asia",
-  860: "Asia",
-  762: "Asia",
-  "004": "Asia",
-  586: "Asia",
-  356: "Asia",
-  524: "Asia",
-  "064": "Asia",
-  "050": "Asia",
-  144: "Asia",
-  462: "Asia",
-  156: "Asia",
-  496: "Asia",
-  408: "Asia",
-  410: "Asia",
-  392: "Asia",
-  158: "Asia",
-  104: "Asia",
-  764: "Asia",
-  418: "Asia",
-  116: "Asia",
-  704: "Asia",
-  458: "Asia",
-  702: "Asia",
-  360: "Asia",
-  608: "Asia",
-  "096": "Asia",
-  626: "Asia",
-  // Oceania
-  "036": "Oceania",
-  554: "Oceania",
-  598: "Oceania",
-  242: "Oceania",
-  "090": "Oceania",
-  548: "Oceania",
-  540: "Oceania",
-  882: "Oceania",
-  776: "Oceania",
-  296: "Oceania",
-  583: "Oceania",
-  585: "Oceania",
-  584: "Oceania",
+const CATEGORY_COLORS = {
+  frontend: "#C6FF34",
+  backend: "#9FE870",
+  database: "#38BDF8",
+  devops: "#F59E0B",
+  tools: "#EF4444",
+  mobile: "#A78BFA",
+  design: "#F472B6",
+  other: "#94A3B8",
 };
 
-// Fallback if skill has no `region` field: derive from `category`.
-const CATEGORY_TO_REGION = {
-  frontend: "North America",
-  backend: "Europe",
-  tools: "Asia",
-  devops: "Africa",
-  database: "South America",
-  mobile: "Oceania",
+const LIGHT_COLORS = {
+  frontend: "#1D4ED8",
+  backend: "#0891B2",
+  database: "#7C3AED",
+  devops: "#D97706",
+  tools: "#DC2626",
+  mobile: "#7C3AED",
+  design: "#DB2777",
+  other: "#64748B",
 };
 
-const resolveRegion = (skill) => {
-  if (skill?.region && REGIONS[skill.region]) return skill.region;
-  const cat = (skill?.category || "").toLowerCase();
-  return CATEGORY_TO_REGION[cat] || "Asia";
-};
+const ConstellationCanvas = ({ nodes, theme }) => {
+  const canvasRef = useRef(null);
+  const stateRef = useRef({
+    rotX: 0.3,
+    rotY: 0.5,
+    zoom: 160,
+    dragStart: null,
+    autoRotate: true,
+    time: 0,
+    hovered: null,
+    projected: [],
+  });
+  const [tooltip, setTooltip] = useState(null);
+  const animRef = useRef(null);
 
-// world-atlas geo.id can be number or zero-padded string. Normalize.
-const normalizeId = (id) => String(id).padStart(3, "0");
+  const getColor = useCallback(
+    (cat) => {
+      const key = (cat || "other").toLowerCase();
+      return theme === "black"
+        ? CATEGORY_COLORS[key] || CATEGORY_COLORS.other
+        : LIGHT_COLORS[key] || LIGHT_COLORS.other;
+    },
+    [theme]
+  );
+
+  // Build 3D node positions
+  const nodes3d = useMemo(() => {
+    return nodes.map((s, i) => {
+      const key = (s.category || "other").toLowerCase();
+      const cl = CLUSTERS[key] || CLUSTERS.other;
+      const r = 0.45 + Math.random() * 0.45;
+      const a = (i / nodes.length) * Math.PI * 2 + Math.random() * 0.8;
+      const b = (Math.random() - 0.5) * Math.PI;
+      return {
+        ...s,
+        x: cl.cx + Math.cos(a) * Math.cos(b) * r,
+        y: cl.cy + Math.sin(b) * r,
+        z: cl.cz + Math.sin(a) * Math.cos(b) * r,
+        baseR: 4 + ((s.percentage || 80) / 100) * 7,
+        color: getColor(s.category),
+      };
+    });
+  }, [nodes, getColor]);
+
+  // Edges within same category
+  const edges = useMemo(() => {
+    const e = [];
+    nodes3d.forEach((a, i) => {
+      nodes3d.forEach((b, j) => {
+        if (j <= i) return;
+        const ka = (a.category || "other").toLowerCase();
+        const kb = (b.category || "other").toLowerCase();
+        if (ka === kb) e.push([i, j]);
+      });
+    });
+    return e;
+  }, [nodes3d]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const s = stateRef.current;
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const project = (x, y, z) => {
+      const cosY = Math.cos(s.rotY),
+        sinY = Math.sin(s.rotY);
+      const x2 = x * cosY + z * sinY;
+      const z2 = -x * sinY + z * cosY;
+      const cosX = Math.cos(s.rotX),
+        sinX = Math.sin(s.rotX);
+      const y2 = y * cosX - z2 * sinX;
+      const z3 = y * sinX + z2 * cosX;
+      const fov = 4;
+      const scale = s.zoom / (z3 / fov + 2);
+      return {
+        sx: canvas.width / 2 + x2 * scale,
+        sy: canvas.height / 2 + y2 * scale,
+        sz: z3,
+        scale,
+      };
+    };
+
+    const draw = () => {
+      s.time += 0.005;
+      if (s.autoRotate) s.rotY += 0.003;
+
+      const W = canvas.width,
+        H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Project all nodes with subtle float
+      s.projected = nodes3d.map((n, i) => {
+        const wave = Math.sin(s.time * 1.2 + i * 0.7) * 0.04;
+        return project(n.x, n.y + wave, n.z);
+      });
+
+      // Draw edges
+      edges.forEach(([ai, bi]) => {
+        const a = s.projected[ai],
+          b = s.projected[bi];
+        if (!a || !b) return;
+        const avgZ = (a.sz + b.sz) / 2;
+        const op = Math.max(0, (1 - avgZ / 3) * 0.18);
+        ctx.beginPath();
+        ctx.moveTo(a.sx, a.sy);
+        ctx.lineTo(b.sx, b.sy);
+        ctx.strokeStyle = nodes3d[ai].color;
+        ctx.globalAlpha = op;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      });
+
+      // Sort back→front
+      const order = [...nodes3d.keys()].sort(
+        (a, b) => (s.projected[b]?.sz || 0) - (s.projected[a]?.sz || 0)
+      );
+
+      order.forEach((i) => {
+        const n = nodes3d[i];
+        const p = s.projected[i];
+        if (!p) return;
+        const depth = (p.sz + 3) / 6;
+        const op = Math.max(0.2, 0.3 + depth * 0.7);
+        const r = n.baseR * (0.55 + depth * 0.5);
+        const isHov = s.hovered === i;
+
+        // Glow
+        if (isHov || depth > 0.45) {
+          const gr = ctx.createRadialGradient(p.sx, p.sy, 0, p.sx, p.sy, r * 3);
+          gr.addColorStop(0, n.color + "50");
+          gr.addColorStop(1, "transparent");
+          ctx.beginPath();
+          ctx.arc(p.sx, p.sy, r * 3, 0, Math.PI * 2);
+          ctx.fillStyle = gr;
+          ctx.globalAlpha = isHov ? 0.9 : op * 0.4;
+          ctx.fill();
+        }
+
+        // Node circle
+        ctx.beginPath();
+        ctx.arc(p.sx, p.sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = n.color;
+        ctx.globalAlpha = op * (isHov ? 1.1 : 0.88);
+        ctx.fill();
+
+        // Highlight dot
+        ctx.beginPath();
+        ctx.arc(p.sx - r * 0.25, p.sy - r * 0.25, r * 0.32, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255,0.55)";
+        ctx.globalAlpha = op * 0.6;
+        ctx.fill();
+
+        // Label
+        if (isHov || (r > 7 && depth > 0.55)) {
+          ctx.globalAlpha = op * (isHov ? 1 : 0.65);
+          ctx.fillStyle = isHov
+            ? n.color
+            : theme === "black"
+            ? "rgba(255,255,255,0.8)"
+            : "rgba(0,0,0,0.7)";
+          ctx.font = `${isHov ? 600 : 500} ${isHov ? 12 : 10}px monospace`;
+          ctx.textAlign = "center";
+          ctx.fillText(n.name, p.sx, p.sy + r + 13);
+        }
+      });
+
+      ctx.globalAlpha = 1;
+      animRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+
+    // Mouse events
+    const onMouseDown = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      s.dragStart = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+        rx: s.rotX,
+        ry: s.rotY,
+      };
+      s.autoRotate = false;
+    };
+
+    const onMouseMove = (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      if (s.dragStart) {
+        s.rotY = s.dragStart.ry + (mx - s.dragStart.x) * 0.005;
+        s.rotX = s.dragStart.rx + (my - s.dragStart.y) * 0.005;
+        return;
+      }
+
+      let hit = null;
+      s.projected.forEach((p, i) => {
+        if (!p) return;
+        if (Math.hypot(p.sx - mx, p.sy - my) < nodes3d[i].baseR + 6) hit = i;
+      });
+      s.hovered = hit;
+      if (hit !== null) {
+        const p = s.projected[hit];
+        setTooltip({
+          x: p.sx + 14,
+          y: p.sy - 24,
+          name: nodes3d[hit].name,
+          cat: nodes3d[hit].category,
+          pct: nodes3d[hit].percentage || 80,
+          color: nodes3d[hit].color,
+        });
+      } else {
+        setTooltip(null);
+      }
+    };
+
+    const onMouseUp = () => {
+      s.dragStart = null;
+    };
+    const onWheel = (e) => {
+      s.zoom = Math.max(80, Math.min(320, s.zoom - e.deltaY * 0.3));
+    };
+    const onLeave = () => {
+      s.hovered = null;
+      setTooltip(null);
+    };
+
+    canvas.addEventListener("mousedown", onMouseDown);
+    canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("mouseup", onMouseUp);
+    canvas.addEventListener("wheel", onWheel);
+    canvas.addEventListener("mouseleave", onLeave);
+
+    return () => {
+      cancelAnimationFrame(animRef.current);
+      window.removeEventListener("resize", resize);
+      canvas.removeEventListener("mousedown", onMouseDown);
+      canvas.removeEventListener("mousemove", onMouseMove);
+      canvas.removeEventListener("mouseup", onMouseUp);
+      canvas.removeEventListener("wheel", onWheel);
+      canvas.removeEventListener("mouseleave", onLeave);
+    };
+  }, [nodes3d, edges, theme]);
+
+  const resetView = () => {
+    stateRef.current.rotX = 0.3;
+    stateRef.current.rotY = 0.5;
+    stateRef.current.zoom = 160;
+    stateRef.current.autoRotate = true;
+  };
+
+  return (
+    <div className="relative w-full h-full">
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full cursor-grab active:cursor-grabbing"
+      />
+
+      {/* Tooltip */}
+      <AnimatePresence>
+        {tooltip && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.1 }}
+            className="absolute pointer-events-none z-10 public-card bg-base-100/95 backdrop-blur-sm px-3 py-2 rounded-xl shadow-xl"
+            style={{ left: tooltip.x, top: tooltip.y }}
+          >
+            <p className="text-sm font-bold" style={{ color: tooltip.color }}>
+              {tooltip.name}
+            </p>
+            <p className="text-xs text-base-content/50 capitalize mt-0.5">
+              {tooltip.cat} · {tooltip.pct}%
+            </p>
+            <div className="mt-1.5 h-1 w-24 rounded-full bg-base-300 overflow-hidden">
+              <div
+                className="h-full rounded-full"
+                style={{
+                  width: `${tooltip.pct}%`,
+                  background: tooltip.color,
+                }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Controls */}
+      <div className="absolute bottom-4 right-4 flex flex-col gap-2">
+        <button
+          onClick={resetView}
+          className="w-8 h-8 rounded-xl public-card bg-base-100/80 flex items-center justify-center text-base-content/50 hover:text-primary transition-colors"
+          title="Reset view"
+        >
+          <RotateCcw size={14} />
+        </button>
+      </div>
+
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
+        <p className="text-xs text-base-content/30 font-mono">
+          Drag · Scroll to Zoom
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export const SkillsSection = ({ showHero = true }) => {
   const { data, isLoading } = useSkills();
+  const { data: settings } = useSettings();
+  const { theme } = useTheme(settings?.defaultTheme);
+  const [activeCategory, setActiveCategory] = useState(null);
+
   const skills = useMemo(
     () =>
       Array.isArray(data) ? data : Array.isArray(data?.data) ? data.data : [],
     [data]
   );
 
-  const [activeRegion, setActiveRegion] = useState(null);
-
-  const skillsByRegion = useMemo(() => {
-    const map = Object.fromEntries(Object.keys(REGIONS).map((r) => [r, []]));
+  const categories = useMemo(() => {
+    const map = {};
     skills.forEach((s) => {
-      const r = resolveRegion(s);
-      if (!map[r]) map[r] = [];
-      map[r].push(s);
+      const k = (s.category || "other").toLowerCase();
+      if (!map[k]) map[k] = [];
+      map[k].push(s);
     });
     return map;
   }, [skills]);
 
-  // Regions that actually have at least one skill — highlighted brighter.
-  const populatedRegions = useMemo(
-    () =>
-      new Set(
-        Object.entries(skillsByRegion)
-          .filter(([, arr]) => arr.length > 0)
-          .map(([r]) => r)
-      ),
-    [skillsByRegion]
-  );
+  const filteredSkills = activeCategory
+    ? skills.filter(
+        (s) => (s.category || "other").toLowerCase() === activeCategory
+      )
+    : skills;
 
-  const activeSkills = activeRegion ? skillsByRegion[activeRegion] || [] : [];
-  const visibleSkills = activeRegion ? activeSkills : skills;
-  const activeSkillNames = activeSkills.map((skill) => skill.name).join(", ");
+  if (isLoading) {
+    return (
+      <section className="py-32 flex justify-center">
+        <span className="loading loading-spinner loading-lg text-primary" />
+      </section>
+    );
+  }
 
   return (
     <section
       id="skills"
-      className={`public-hero relative overflow-hidden pt-10 px-4 pb-16 sm:pb-20 md:pb-24 sm:px-6 lg:px-8`}
+      className="public-hero relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8"
     >
       <div className="relative mx-auto max-w-7xl">
         {showHero && (
           <motion.div
             initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="mb-8 sm:mb-10 md:mb-12 text-center"
+            className="mb-12 text-center"
           >
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 text-primary mb-6">
+            <div className="relative z-10 inline-flex items-center justify-center w-20 h-20 rounded-3xl bg-primary/10 text-primary mb-6">
               <Code2 size={40} />
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
@@ -293,181 +417,156 @@ export const SkillsSection = ({ showHero = true }) => {
                 Technologies
               </span>
             </h1>
-            <p className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg text-base-content/70 leading-relaxed">
-              Explore the tools and frameworks I use, with the globe acting as a
-              visual map for each skill group.
+            <p className="max-w-2xl mx-auto text-sm sm:text-base text-base-content/60 leading-relaxed">
+              An interactive 3D constellation — each star is a skill. Drag to
+              rotate, scroll to zoom, hover to inspect.
             </p>
           </motion.div>
         )}
 
-        <div className="grid gap-6 sm:gap-8 lg:gap-8 lg:grid-cols-[1.6fr_1fr]">
-          {/* MAP — circular orthographic globe */}
+        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+          {/* 3D Canvas */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative mx-auto aspect-square w-full max-w-35 sm:max-w-160 overflow-hidden rounded-full public-card bg-linear-to-br from-base-100/80 to-base-200/40 shadow-2xl shadow-primary/10 backdrop-blur-sm"
+            transition={{ duration: 0.7 }}
+            className="relative public-card rounded-3xl overflow-hidden"
+            style={{ height: 520 }}
           >
-            <div className="pointer-events-none absolute inset-0 rounded-full bg-[radial-gradient(circle_at_30%_20%,var(--color-primary)/15,transparent_55%)]" />
-            <ComposableMap
-              projection="geoOrthographic"
-              projectionConfig={{ scale: 250, rotate: [-10, -20, 0] }}
-              width={560}
-              height={560}
-              style={{ width: "100%", height: "100%" }}
-            >
-              <circle
-                cx={320}
-                cy={320}
-                r={300}
-                fill="var(--color-base-200)"
-                opacity={0.35}
-              />
-              <Geographies geography={GEO_URL}>
-                {({ geographies }) =>
-                  geographies.map((geo) => {
-                    const id = normalizeId(geo.id);
-                    const region = COUNTRY_TO_REGION[id];
-                    const isPopulated = region && populatedRegions.has(region);
-                    const isActive = region && region === activeRegion;
-
-                    const baseFill = isActive
-                      ? "var(--color-primary)"
-                      : isPopulated
-                      ? "var(--color-secondary)"
-                      : "var(--color-base-300)";
-
-                    return (
-                      <Geography
-                        key={geo.rsmKey}
-                        geography={geo}
-                        onMouseEnter={() => region && setActiveRegion(region)}
-                        onMouseLeave={() => setActiveRegion(null)}
-                        style={{
-                          default: {
-                            fill: baseFill,
-                            stroke: "var(--color-base-100)",
-                            strokeWidth: 0.5,
-                            outline: "none",
-                            cursor: region ? "pointer" : "default",
-                            transition: "fill 200ms ease",
-                          },
-                          hover: {
-                            fill: region ? "var(--color-primary)" : baseFill,
-                            outline: "none",
-                            cursor: region ? "pointer" : "default",
-                          },
-                          pressed: {
-                            fill: "var(--color-primary)",
-                            outline: "none",
-                          },
-                        }}
-                      />
-                    );
-                  })
-                }
-              </Geographies>
-            </ComposableMap>
-
-            <AnimatePresence>
-              {activeRegion && (
-                <motion.div
-                  key={activeRegion}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  className="pointer-events-none absolute bottom-6 left-1/2 flex max-w-[85%] -translate-x-1/2 items-center gap-2 rounded-full border border-primary/30 bg-base-100/90 px-4 py-2 text-sm font-bold text-primary shadow-lg backdrop-blur"
-                >
-                  <Code2 size={14} className="shrink-0" />
-                  <span className="truncate">
-                    {activeSkillNames || "No skills mapped"}
-                  </span>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            <ConstellationCanvas nodes={filteredSkills} theme={theme} />
           </motion.div>
 
-          {/* SIDE PANEL */}
-          <div className="relative">
-            <div className="sticky top-16 sm:top-28 rounded-3xl public-card bg-base-100/70 p-4 sm:p-6 shadow-xl backdrop-blur-sm">
-              <div className="mb-5 flex items-center justify-between">
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-                  {activeRegion ? "Mapped Skills" : "All Skills"}
-                </h2>
-                <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
-                  {visibleSkills.length} skills
-                </span>
-              </div>
-
-              {isLoading ? (
-                <div className="space-y-3">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="skeleton h-12 w-full rounded-2xl" />
-                  ))}
-                </div>
-              ) : visibleSkills.length === 0 ? (
-                <p className="text-sm text-base-content/60">
-                  No skills added yet.
-                </p>
-              ) : (
-                <div className="max-h-105 sm:max-h-120 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent">
-                  <AnimatePresence mode="popLayout">
-                    <motion.ul
-                      key={activeRegion || "all-skills"}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="space-y-3"
+          {/* Side panel */}
+          <div className="flex flex-col gap-4">
+            {/* Category filter */}
+            <div className="public-card rounded-3xl p-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-base-content/40 mb-3">
+                Filter by category
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setActiveCategory(null)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                    !activeCategory
+                      ? "bg-primary text-primary-content"
+                      : "bg-base-200 text-base-content/60 hover:text-primary"
+                  }`}
+                >
+                  All
+                </button>
+                {Object.entries(categories).map(([cat, arr]) => {
+                  const color =
+                    theme === "black"
+                      ? CATEGORY_COLORS[cat] || CATEGORY_COLORS.other
+                      : LIGHT_COLORS[cat] || LIGHT_COLORS.other;
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() =>
+                        setActiveCategory(activeCategory === cat ? null : cat)
+                      }
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all capitalize ${
+                        activeCategory === cat
+                          ? "shadow-md"
+                          : "bg-base-200 text-base-content/60 hover:text-base-content"
+                      }`}
+                      style={
+                        activeCategory === cat
+                          ? {
+                              background: color,
+                              color: theme === "black" ? "#000" : "#fff",
+                            }
+                          : {}
+                      }
                     >
-                      {visibleSkills.map((skill, i) => (
-                        <motion.li
-                          key={skill._id || skill.name}
-                          onClick={() => {
-                            const region = resolveRegion(skill);
-                            setActiveRegion(
-                              activeRegion === region ? null : region
-                            );
-                          }}
-                          initial={{ opacity: 0, x: 12 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: i * 0.04 }}
-                          className={`group cursor-pointer rounded-2xl border p-3 transition-all hover:shadow-md hover:shadow-primary/10 ${
-                            activeRegion === resolveRegion(skill)
-                              ? "border-primary/50 bg-primary/5 shadow-md shadow-primary/10"
-                              : "border-base-200/60 bg-base-100 hover:border-primary/40"
-                          }`}
-                        >
-                          <div className="mb-2 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              {skill.icon ? (
-                                <span className="text-xl">{skill.icon}</span>
-                              ) : (
-                                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                                  <Code2 size={14} />
-                                </span>
-                              )}
-                              <span className="text-sm font-bold">
-                                {skill.name}
-                              </span>
-                            </div>
-                            <span className="text-xs font-black text-primary">
-                              {skill.percentage || 80}%
-                            </span>
-                          </div>
-                          <div className="h-1.5 w-full overflow-hidden rounded-full bg-base-200">
+                      {cat} ({arr.length})
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Skill list */}
+            <div className="public-card rounded-3xl p-4 flex-1 overflow-hidden">
+              <p className="text-xs font-bold uppercase tracking-widest text-base-content/40 mb-3">
+                {activeCategory ? `${activeCategory} skills` : "All skills"} ·{" "}
+                {filteredSkills.length}
+              </p>
+              <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+                <AnimatePresence mode="popLayout">
+                  {filteredSkills.map((skill, i) => {
+                    const cat = (skill.category || "other").toLowerCase();
+                    const color =
+                      theme === "black"
+                        ? CATEGORY_COLORS[cat] || CATEGORY_COLORS.other
+                        : LIGHT_COLORS[cat] || LIGHT_COLORS.other;
+                    return (
+                      <motion.div
+                        key={skill._id || skill.name}
+                        initial={{ opacity: 0, x: 12 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -12 }}
+                        transition={{ delay: i * 0.03 }}
+                        className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-base-200/50 transition-colors group"
+                      >
+                        <div
+                          className="w-2.5 h-2.5 rounded-full shrink-0"
+                          style={{ background: color }}
+                        />
+                        <span className="text-sm font-medium flex-1 truncate">
+                          {skill.name}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <div className="w-16 h-1.5 rounded-full bg-base-300 overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${skill.percentage || 80}%` }}
-                              transition={{ duration: 0.6, ease: "easeOut" }}
-                              className="h-full rounded-full bg-linear-to-r from-primary to-secondary"
+                              transition={{ duration: 0.5, delay: i * 0.03 }}
+                              className="h-full rounded-full"
+                              style={{ background: color }}
                             />
                           </div>
-                        </motion.li>
-                      ))}
-                    </motion.ul>
-                  </AnimatePresence>
-                </div>
-              )}
+                          <span className="text-xs font-bold text-base-content/40 w-8 text-right">
+                            {skill.percentage || 80}%
+                          </span>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="public-card rounded-3xl p-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-base-content/40 mb-3">
+                Constellation legend
+              </p>
+              <div className="grid grid-cols-2 gap-1.5">
+                {Object.entries(CATEGORY_COLORS).map(([cat]) => {
+                  const color =
+                    theme === "black"
+                      ? CATEGORY_COLORS[cat]
+                      : LIGHT_COLORS[cat];
+                  const count = categories[cat]?.length || 0;
+                  if (!count) return null;
+                  return (
+                    <div key={cat} className="flex items-center gap-2">
+                      <div
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ background: color }}
+                      />
+                      <span className="text-xs text-base-content/50 capitalize truncate">
+                        {cat}
+                      </span>
+                      <span className="text-xs text-base-content/30 ml-auto">
+                        {count}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
