@@ -20,6 +20,7 @@ import {
   Star,
   User,
   Wrench,
+  SquarePen,
   X,
   Zap,
 } from "lucide-react";
@@ -51,6 +52,7 @@ const sidebarGroups = [
       { path: "/admin/experience", label: "Experience", icon: Briefcase },
       { path: "/admin/education", label: "Education", icon: GraduationCap },
       { path: "/admin/projects", label: "Projects", icon: FolderOpen },
+      { path: "/admin/edits", label: "Edits", icon: SquarePen },
     ],
   },
   {

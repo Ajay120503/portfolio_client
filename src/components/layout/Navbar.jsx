@@ -70,6 +70,7 @@ const Navbar = () => {
     { label: "Experience", href: "/experience" },
     { label: "Services", href: "/services" },
     { label: "Blog", href: "/blog" },
+    { label: "Edits", href: "/edits" },
   ];
 
   // const hiddenNavHrefs = new Set([

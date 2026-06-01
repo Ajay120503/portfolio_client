@@ -30,6 +30,8 @@ import ManageMessages from "../pages/admin/ManageMessages";
 import ManageSettings from "../pages/admin/ManageSettings";
 import Experience from "../pages/public/Experience";
 import Education from "../pages/public/Education";
+import Edits from "../pages/public/Edits";
+import ManageEdits from "../pages/admin/ManageEdits";
 
 const AppRouter = () => {
   return (
@@ -46,6 +48,7 @@ const AppRouter = () => {
       <Route path="/blog" element={<Blog />} />
       <Route path="/blog/:slug" element={<BlogPost />} />
       <Route path="/services" element={<Services />} />
+      <Route path="/edits" element={<Edits />} />
       <Route path="/contact" element={<Contact />} />
 
       {/* Admin Login */}
@@ -72,6 +75,7 @@ const AppRouter = () => {
         <Route path="blog" element={<ManageBlog />} />
         <Route path="messages" element={<ManageMessages />} />
         <Route path="settings" element={<ManageSettings />} />
+        <Route path="edits" element={<ManageEdits />} />
       </Route>
     </Routes>
   );

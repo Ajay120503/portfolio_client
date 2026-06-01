@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { profileAPI, aboutAPI, skillsAPI, experienceAPI, educationAPI, projectsAPI, servicesAPI, testimonialsAPI, blogAPI, settingsAPI } from '../api';
+import { profileAPI, aboutAPI, skillsAPI, experienceAPI, educationAPI, projectsAPI, servicesAPI, testimonialsAPI, blogAPI, settingsAPI, editsAPI } from '../api';
 
 export const useProfile = () =>
   useQuery({ queryKey: ['profile'], queryFn: () => profileAPI.get().then(r => r.data.data), staleTime: 5 * 60 * 1000 });
@@ -39,3 +39,16 @@ export const useSettings = () =>
 
 export const useDashboardStats = () =>
   useQuery({ queryKey: ['dashboard-stats'], queryFn: () => settingsAPI.getDashboardStats().then(r => r.data.data) });
+
+export const useEdits = (params = {}) =>
+  useQuery({
+    queryKey: ['edits', params],
+    queryFn: () => editsAPI.getAll(params).then(r => r.data.data),
+    staleTime: 5 * 60 * 1000,
+  });
+
+export const useAllEdits = () =>
+  useQuery({
+    queryKey: ['edits-admin'],
+    queryFn: () => editsAPI.getAllAdmin().then(r => r.data.data),
+  });

@@ -102,3 +102,25 @@ export const settingsAPI = {
   update: (data) => api.put('/settings', data),
   getDashboardStats: () => api.get('/settings/dashboard/stats'),
 };
+
+// edits
+// export const editsAPI = {
+//   getAll: (params) => api.get('/edits', { params }),
+//   getAllAdmin: () => api.get('/edits/all'),
+//   getById: (id) => api.get(`/edits/${id}`),
+//   create: (data) => api.post('/edits', data),
+//   update: (id, data) => api.put(`/edits/${id}`, data),
+//   delete: (id) => api.delete(`/edits/${id}`),
+//   like: (id) => api.post(`/edits/${id}/like`),
+// };
+
+// edits
+export const editsAPI = {
+  getAll: (params) => api.get('/edits', { params }),
+  getAllAdmin: () => api.get('/edits/all'),
+  getById: (id) => api.get(`/edits/${id}`),
+  create: (data) => api.post('/edits', data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  update: (id, data) => api.put(`/edits/${id}`, data, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  delete: (id) => api.delete(`/edits/${id}`),
+  like: (id) => api.post(`/edits/${id}/like`),
+};
