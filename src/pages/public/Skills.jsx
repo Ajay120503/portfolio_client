@@ -9,14 +9,25 @@ import { useSettings, useSkills } from "../../hooks/usePortfolioData";
 import { useTheme } from "../../hooks/useTheme";
 
 // Category cluster positions in 3D space
+// const CLUSTERS = {
+//   frontend: { cx: 1.2, cy: -0.8, cz: 0.0 },
+//   backend: { cx: -1.2, cy: 0.2, cz: 0.5 },
+//   database: { cx: 0.2, cy: 1.2, cz: -0.8 },
+//   devops: { cx: -0.5, cy: -1.0, cz: -1.0 },
+//   tools: { cx: 1.0, cy: 0.8, cz: 1.0 },
+//   mobile: { cx: -0.8, cy: -0.5, cz: 0.8 },
+//   design: { cx: 0.5, cy: -1.2, cz: 0.5 },
+//   other: { cx: 0.0, cy: 0.0, cz: 0.0 },
+// };
+
 const CLUSTERS = {
-  frontend: { cx: 1.2, cy: -0.8, cz: 0.0 },
-  backend: { cx: -1.2, cy: 0.2, cz: 0.5 },
-  database: { cx: 0.2, cy: 1.2, cz: -0.8 },
-  devops: { cx: -0.5, cy: -1.0, cz: -1.0 },
-  tools: { cx: 1.0, cy: 0.8, cz: 1.0 },
-  mobile: { cx: -0.8, cy: -0.5, cz: 0.8 },
-  design: { cx: 0.5, cy: -1.2, cz: 0.5 },
+  frontend: { cx: 0.7, cy: -0.4, cz: 0.0 },
+  backend: { cx: -0.7, cy: 0.2, cz: 0.3 },
+  database: { cx: 0.2, cy: 0.7, cz: -0.4 },
+  devops: { cx: -0.4, cy: -0.7, cz: -0.5 },
+  tools: { cx: 0.6, cy: 0.5, cz: 0.6 },
+  mobile: { cx: -0.5, cy: -0.3, cz: 0.5 },
+  design: { cx: 0.4, cy: -0.7, cz: 0.3 },
   other: { cx: 0.0, cy: 0.0, cz: 0.0 },
 };
 
@@ -44,10 +55,20 @@ const LIGHT_COLORS = {
 
 const ConstellationCanvas = ({ nodes, theme }) => {
   const canvasRef = useRef(null);
+  // const stateRef = useRef({
+  //   rotX: 0.3,
+  //   rotY: 0.5,
+  //   zoom: 160,
+  //   dragStart: null,
+  //   autoRotate: true,
+  //   time: 0,
+  //   hovered: null,
+  //   projected: [],
+  // });
   const stateRef = useRef({
     rotX: 0.3,
     rotY: 0.5,
-    zoom: 160,
+    zoom: 240,
     dragStart: null,
     autoRotate: true,
     time: 0,
@@ -294,10 +315,17 @@ const ConstellationCanvas = ({ nodes, theme }) => {
     };
   }, [nodes3d, edges, theme]);
 
+  // const resetView = () => {
+  //   stateRef.current.rotX = 0.3;
+  //   stateRef.current.rotY = 0.5;
+  //   stateRef.current.zoom = 160;
+  //   stateRef.current.autoRotate = true;
+  // };
+
   const resetView = () => {
     stateRef.current.rotX = 0.3;
     stateRef.current.rotY = 0.5;
-    stateRef.current.zoom = 160;
+    stateRef.current.zoom = 240;
     stateRef.current.autoRotate = true;
   };
 
