@@ -317,7 +317,10 @@ const ConstellationCanvas = ({ nodes, theme }) => {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.1 }}
             className="absolute pointer-events-none z-10 public-card bg-base-100/95 backdrop-blur-sm px-3 py-2 rounded-xl shadow-xl"
-            style={{ left: tooltip.x, top: tooltip.y }}
+            style={{
+              left: Math.min(tooltip.x, window.innerWidth - 180),
+              top: Math.max(10, tooltip.y),
+            }}
           >
             <p className="text-sm font-bold" style={{ color: tooltip.color }}>
               {tooltip.name}
@@ -424,15 +427,14 @@ export const SkillsSection = ({ showHero = true }) => {
           </motion.div>
         )}
 
-        <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]">
           {/* 3D Canvas */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="relative public-card rounded-3xl overflow-hidden"
-            style={{ height: 520 }}
+            className="relative public-card rounded-3xl overflow-hidden h-87.5 sm:h-112.5 lg:h-130"
           >
             <ConstellationCanvas nodes={filteredSkills} theme={theme} />
           </motion.div>
@@ -444,10 +446,10 @@ export const SkillsSection = ({ showHero = true }) => {
               <p className="text-xs font-bold uppercase tracking-widest text-base-content/40 mb-3">
                 Filter by category
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 overflow-hidden">
                 <button
                   onClick={() => setActiveCategory(null)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all max-w-full truncate ${
                     !activeCategory
                       ? "bg-primary text-primary-content"
                       : "bg-base-200 text-base-content/60 hover:text-primary"
@@ -493,7 +495,7 @@ export const SkillsSection = ({ showHero = true }) => {
                 {activeCategory ? `${activeCategory} skills` : "All skills"} ·{" "}
                 {filteredSkills.length}
               </p>
-              <div className="space-y-2 max-h-96 overflow-y-auto pr-1">
+              <div className="space-y-2 max-h-62.5 sm:max-h-87.5 lg:max-h-96 overflow-y-auto pr-1">
                 <AnimatePresence mode="popLayout">
                   {filteredSkills.map((skill, i) => {
                     const cat = (skill.category || "other").toLowerCase();
