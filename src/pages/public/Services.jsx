@@ -293,7 +293,7 @@ const CTABanner = () => (
           Ready to Build
           <br className="hidden md:block" /> Something Amazing?
         </h2>
-        <p className="text-white/70 text-sm sm:text-base max-w-xl leading-relaxed">
+        <p className="text-white text-sm sm:text-base max-w-xl leading-relaxed">
           Let&apos;s turn your ideas into powerful digital experiences with
           modern technologies and beautiful UI.
         </p>
@@ -302,8 +302,8 @@ const CTABanner = () => (
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.97 }}
-        className="shrink-0 flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-white font-bold text-sm shadow-xl transition-shadow hover:shadow-2xl"
-        style={{ color: "var(--color-primary)" }}
+        className="shrink-0 flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-white text-black font-bold text-sm shadow-xl transition-shadow hover:shadow-2xl"
+        // style={{ color: "var(--color-primary)" }}
       >
         Start Your Project
         <ArrowRight size={16} />
