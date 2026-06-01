@@ -45,7 +45,34 @@ const fontOptions = [
   { value: "poppins", label: "Poppins" },
   { value: "manrope", label: "Manrope" },
   { value: "serif", label: "Editorial Serif" },
+  { value: "outfit", label: "Outfit" },
+  { value: "dm-sans", label: "DM Sans" },
+  { value: "plus-jakarta", label: "Plus Jakarta Sans" },
+  { value: "space-grotesk", label: "Space Grotesk" },
+  { value: "sora", label: "Sora" },
+  { value: "nunito", label: "Nunito" },
+  { value: "raleway", label: "Raleway" },
+  { value: "josefin", label: "Josefin Sans" },
+  { value: "mono", label: "JetBrains Mono" },
 ];
+
+const fontStacks = {
+  inter: "Inter, ui-sans-serif, system-ui, sans-serif",
+  system:
+    'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+  poppins: "Poppins, Inter, ui-sans-serif, sans-serif",
+  manrope: "Manrope, Inter, ui-sans-serif, sans-serif",
+  serif: 'Georgia, Cambria, "Times New Roman", Times, serif',
+  outfit: '"Outfit", Inter, ui-sans-serif, sans-serif',
+  "dm-sans": '"DM Sans", Inter, ui-sans-serif, sans-serif',
+  "plus-jakarta": '"Plus Jakarta Sans", Inter, ui-sans-serif, sans-serif',
+  "space-grotesk": '"Space Grotesk", Inter, ui-sans-serif, sans-serif',
+  sora: '"Sora", Inter, ui-sans-serif, sans-serif',
+  nunito: '"Nunito", Inter, ui-sans-serif, sans-serif',
+  raleway: '"Raleway", Inter, ui-sans-serif, sans-serif',
+  josefin: '"Josefin Sans", Inter, ui-sans-serif, sans-serif',
+  mono: '"JetBrains Mono", "Fira Code", ui-monospace, monospace',
+};
 
 const ManageSettings = () => {
   const { data: settings, isLoading } = useSettings();
@@ -377,7 +404,7 @@ const ManageSettings = () => {
             </div>
           </div>
 
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
+          {/* <div className="mt-6 grid gap-5 md:grid-cols-2">
             <div className="form-control">
               <label className="label">
                 <span className="label-text font-medium">Portfolio Font</span>
@@ -392,6 +419,39 @@ const ManageSettings = () => {
                   </option>
                 ))}
               </select>
+            </div>
+          </div> */}
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text font-medium">Portfolio Font</span>
+            </label>
+            <select
+              {...register("fontFamily")}
+              className="select select-bordered rounded-xl"
+            >
+              {fontOptions.map((font) => (
+                <option key={font.value} value={font.value}>
+                  {font.label}
+                </option>
+              ))}
+            </select>
+
+            {/* Font Preview */}
+            <div
+              className="mt-3 px-4 py-3 rounded-xl bg-base-200/60 border border-base-300"
+              style={{
+                fontFamily: fontStacks[watch("fontFamily")] || fontStacks.inter,
+              }}
+            >
+              <p className="text-xs text-base-content/40 mb-1 font-sans">
+                Preview
+              </p>
+              <p className="text-base font-semibold text-base-content">
+                The quick brown fox jumps over the lazy dog
+              </p>
+              <p className="text-sm text-base-content/60 mt-0.5">
+                Aa Bb Cc — 0123456789
+              </p>
             </div>
           </div>
         </div>
