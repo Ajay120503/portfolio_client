@@ -154,8 +154,8 @@ const HeroSection = ({ profile }) => {
             {/* Top badges row */}
             <div className="flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary tracking-wide uppercase">
-                <Code2 size={13} />
-                Web Developer Portfolio
+                {/* <Code2 size={13} /> */}
+                Welcome to my Portfolio
               </span>
 
               {profile?.isAvailableForWork && (
