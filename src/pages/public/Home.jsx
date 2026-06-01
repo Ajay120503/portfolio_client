@@ -129,7 +129,7 @@ const HeroSection = ({ profile }) => {
   //     : profile.ctaButtonLink;
 
   return (
-    <section className="public-hero relative flex min-h-screen items-center justify-center overflow-hidden px-4 pt-10 pb-10 sm:px-6 lg:px-8">
+    <section className="public-hero relative flex min-h-screen items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8">
       {/* Enhanced background with animated particles */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/50 to-transparent" />
@@ -143,13 +143,13 @@ const HeroSection = ({ profile }) => {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-7xl">
-        <div className="grid grid-cols-1 items-center gap-6 sm:gap-8 lg:gap-12 lg:grid-cols-2">
+        <div className="grid grid-cols-1 items-center gap-8 lg:gap-12 lg:grid-cols-2">
           {/* Left Column */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-            className="flex flex-col gap-5"
+            className="flex flex-col gap-4 lg:gap-5"
           >
             {/* Top badges row */}
             <div className="flex flex-wrap items-center gap-2">
@@ -202,9 +202,14 @@ const HeroSection = ({ profile }) => {
                   <TypingText
                     texts={[
                       profile?.fullName || "Developer",
-                      profile?.tagline || "Creator",
-                      profile?.subTagline?.split(" ").slice(0, 3).join(" ") ||
-                        "Problem Solver",
+                      ...(profile?.tagline
+                        ?.split(",")
+                        .map((s) => s.trim())
+                        .filter(Boolean) || ["Creator"]),
+                      // ...(profile?.subTagline
+                      //   ?.split(",")
+                      //   .map((s) => s.trim())
+                      //   .filter(Boolean) || ["Problem Solver"]),
                     ]}
                     speed={75}
                     deleteSpeed={35}
@@ -250,17 +255,42 @@ const HeroSection = ({ profile }) => {
               )}
             </div>
 
-            {/* Divider */}
-            <div className="flex items-center gap-4">
-              <div className="h-px flex-1 bg-base-content/10" />
-              <span className="text-xs text-base-content/30 uppercase tracking-widest">
-                Find me on
-              </span>
-              <div className="h-px flex-1 bg-base-content/10" />
+            {/* Divider + Social — hidden on mobile */}
+            <div className="hidden sm:flex flex-col gap-4">
+              <div className="flex items-center gap-4">
+                <div className="h-px flex-1 bg-base-content/10" />
+                <span className="text-xs text-base-content/30 uppercase tracking-widest">
+                  Find me on
+                </span>
+                <div className="h-px flex-1 bg-base-content/10" />
+              </div>
+              <div className="flex gap-2">
+                {socialLinks.map(([platform, url], i) => {
+                  const Icon = socialIcons[platform];
+                  if (!Icon) return null;
+                  return (
+                    <motion.a
+                      key={platform}
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 + i * 0.05 }}
+                      whileHover={{ y: -3, scale: 1.1 }}
+                      className="w-10 h-10 rounded-xl public-card bg-base-100/50 backdrop-blur-sm flex items-center justify-center text-base-content/50 hover:text-primary hover:border-primary/40 transition-colors duration-200"
+                      aria-label={`Visit my ${platform} profile`}
+                      title={platform}
+                    >
+                      <Icon size={17} />
+                    </motion.a>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Social Links */}
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               {socialLinks.map(([platform, url], i) => {
                 const Icon = socialIcons[platform];
                 if (!Icon) return null;
@@ -282,7 +312,7 @@ const HeroSection = ({ profile }) => {
                   </motion.a>
                 );
               })}
-            </div>
+            </div> */}
           </motion.div>
 
           {/* Right Column */}
@@ -294,27 +324,27 @@ const HeroSection = ({ profile }) => {
               delay: 0.2,
               ease: [0.25, 0.1, 0.25, 1],
             }}
-            className="flex justify-center items-center"
+            className="flex justify-center items-center mt-4 lg:mt-0"
           >
             <div className="relative group">
-              {/* Outer slow rotate ring */}
+              {/* Outer ring */}
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-4 rounded-full border border-dashed border-primary/25"
+                className="absolute -inset-3 lg:-inset-4 rounded-full border border-dashed border-primary/25"
               />
 
-              {/* Inner counter rotate ring */}
+              {/* Inner ring */}
               <motion.div
                 animate={{ rotate: -360 }}
                 transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-                className="absolute -inset-8 rounded-full border border-dotted border-secondary/20"
+                className="absolute -inset-6 lg:-inset-8 rounded-full border border-dotted border-secondary/20"
               />
 
-              {/* Glow blob behind image */}
+              {/* Glow */}
               <div className="absolute inset-0 rounded-full bg-primary/20 blur-3xl scale-110 opacity-60 group-hover:opacity-90 transition-opacity duration-500" />
 
-              {/* Floating badge — top right */}
+              {/* Floating badge top right — hidden on mobile */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{
@@ -322,7 +352,7 @@ const HeroSection = ({ profile }) => {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute -top-3 -right-6 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full public-card bg-base-100/90 border border-primary/30 shadow-lg text-xs font-bold text-primary max-w-35"
+                className="hidden sm:flex absolute -top-3 -right-6 z-20 items-center gap-1.5 px-3 py-1.5 rounded-full public-card bg-base-100/90 border border-primary/30 shadow-lg text-xs font-bold text-primary max-w-35"
               >
                 <span className="w-1.5 h-1.5 shrink-0 rounded-full bg-primary animate-pulse" />
                 <span className="truncate">
@@ -330,7 +360,7 @@ const HeroSection = ({ profile }) => {
                 </span>
               </motion.div>
 
-              {/* Floating badge — bottom left */}
+              {/* Floating badge bottom left — hidden on mobile */}
               <motion.div
                 animate={{ y: [0, 6, 0] }}
                 transition={{
@@ -339,7 +369,7 @@ const HeroSection = ({ profile }) => {
                   ease: "easeInOut",
                   delay: 1,
                 }}
-                className="absolute -bottom-3 -left-6 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full public-card bg-base-100/90 border border-secondary/30 shadow-lg text-xs font-bold text-secondary max-w-35"
+                className="hidden sm:flex absolute -bottom-3 -left-6 z-20 items-center gap-1.5 px-3 py-1.5 rounded-full public-card bg-base-100/90 border border-secondary/30 shadow-lg text-xs font-bold text-secondary max-w-35"
               >
                 <Code2 size={12} className="shrink-0" />
                 <span className="truncate">
@@ -347,9 +377,8 @@ const HeroSection = ({ profile }) => {
                 </span>
               </motion.div>
 
-              {/* Main image */}
-              <div className="relative h-56 w-56 md:h-72 md:w-72 lg:h-80 lg:w-80 rounded-full overflow-hidden border-2 border-primary/40 shadow-2xl z-10">
-                {/* Corner accent dots */}
+              {/* Main image — smaller on mobile */}
+              <div className="relative h-48 w-48 sm:h-56 sm:w-56 md:h-72 md:w-72 lg:h-80 lg:w-80 rounded-full overflow-hidden border-2 border-primary/40 shadow-2xl z-10">
                 <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-primary z-20 shadow-md shadow-primary/50" />
                 <div className="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-secondary z-20 shadow-md shadow-secondary/50" />
 
@@ -357,15 +386,14 @@ const HeroSection = ({ profile }) => {
                   <img
                     src={profile.avatar.url}
                     alt={profile.fullName || "Profile"}
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-108"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center bg-linear-to-br from-primary/20 to-secondary/20">
-                    <Code2 size={72} className="text-primary" />
+                    <Code2 size={64} className="text-primary" />
                   </div>
                 )}
 
-                {/* Overlay shimmer on hover */}
                 <div className="absolute inset-0 bg-linear-to-tr from-primary/10 via-transparent to-secondary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             </div>
