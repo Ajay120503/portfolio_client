@@ -126,11 +126,16 @@ const Lightbox = ({ items, startIndex, onClose, onLike, onView }) => {
   const [current, setCurrent] = useState(startIndex);
   const [likedLocal, setLikedLocal] = useState({});
   const [touchStart, setTouchStart] = useState(0);
+  const countedRef = useRef(new Set());
   const item = items[current];
 
   useEffect(() => {
-    if (item && onView) onView(item._id);
-  }, [item, onView]);
+    const itemId = items[current]?._id;
+    if (itemId && !countedRef.current.has(itemId)) {
+      countedRef.current.add(itemId);
+      if (onView) onView(itemId);
+    }
+  }, [current, items, onView]);
 
   useEffect(() => {
     const onKey = (e) => {
@@ -164,7 +169,7 @@ const Lightbox = ({ items, startIndex, onClose, onLike, onView }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl flex items-center justify-center"
+      className="absolute inset-0 z-100 bg-black/95 backdrop-blur-xl flex items-center justify-center"
       onClick={onClose}
     >
       <button
@@ -475,6 +480,10 @@ export const EditsSection = ({ showHero = true }) => {
   const [orderType, setOrderType] = useState("default");
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
+  useEffect(() => {
+    setLightboxIndex(null); // close lightbox on category/sort change
+  }, [activeCategory, orderType]);
+
   // Sync local edits with fetched data
   useEffect(() => {
     if (rawEdits && Array.isArray(rawEdits)) {
@@ -497,15 +506,17 @@ export const EditsSection = ({ showHero = true }) => {
     }
   };
 
-  const handleView = async (id) => {
+  // Inside EditsSection component
+  const handleView = useCallback(async (id) => {
+    // Only update if not already counted in current session
     setLocalEdits((prev) =>
       prev.map((item) =>
         item._id === id ? { ...item, views: item.views + 1 } : item
       )
     );
-    // Optional: call API if exists
+    // Optional: call API (be careful to not double-call)
     if (editsAPI.incrementView) await editsAPI.incrementView(id);
-  };
+  }, []);
 
   // Filter and sort logic
   const filteredEdits = useMemo(() => {
