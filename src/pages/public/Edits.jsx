@@ -406,7 +406,7 @@ const EditCard = ({ item, index, onClick, onLike, isLikedByUser }) => {
         )}
 
         {/* Overlay on hover */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
           <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
             <p className="text-white font-bold text-base line-clamp-1">
               {item.title}
@@ -442,7 +442,7 @@ const EditCard = ({ item, index, onClick, onLike, isLikedByUser }) => {
         {/* Badges */}
         {item.isFeatured && (
           <div className="absolute top-3 left-3">
-            <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 text-black text-xs font-bold shadow-lg">
+            <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-linear-to-r from-amber-400 to-orange-500 text-black text-xs font-bold shadow-lg">
               <Sparkles size={12} /> Featured
             </span>
           </div>
@@ -550,7 +550,7 @@ export const EditsSection = ({ showHero = true }) => {
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute top-0 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-0 -right-40 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse delay-1000" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-200 h-200 bg-accent/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-7xl">
@@ -562,12 +562,12 @@ export const EditsSection = ({ showHero = true }) => {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="mb-16 text-center"
           >
-            <div className="relative z-10 inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-gradient-to-br from-primary/20 to-secondary/20 text-primary mb-6 shadow-xl backdrop-blur-sm">
+            <div className="relative z-10 inline-flex items-center justify-center w-24 h-24 rounded-3xl bg-linear-to-br from-primary/20 to-secondary/20 text-primary mb-6 shadow-xl backdrop-blur-sm">
               <Camera size={44} />
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-5 tracking-tight">
               Creative{" "}
-              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
                 Edits
               </span>
             </h1>
@@ -712,7 +712,7 @@ const Edits = () => {
           content="Creative photo and video edits showcase - unique edits gallery with interactive features"
         />
       </Helmet>
-      <div className="public-page min-h-screen bg-gradient-to-b from-base-100 to-base-200">
+      <div className="public-page min-h-screen bg-linear-to-b from-base-100 to-base-200">
         <Navbar />
         <main>
           <EditsSection />
